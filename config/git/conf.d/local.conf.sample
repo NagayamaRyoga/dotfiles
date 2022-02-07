@@ -1,0 +1,15 @@
+[commit]
+    gpgSign = true
+
+[tag]
+    forceSignAnnotated = true
+
+[users "default"]
+    signingKey = ""
+
+[url "git@example.ghe.com:"]
+    pushInsteadOf = https://example.ghe.com/
+    insteadOf = example:
+
+[ghq "https://example.ghe.com"]
+    vcs = github

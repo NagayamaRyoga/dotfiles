@@ -1,0 +1,12 @@
+name: macOS
+
+on: [push]
+
+jobs:
+  macOS:
+    name: macOS
+    runs-on: macOS-latest
+
+    steps:
+      - name: Setup
+        run: curl -sL https://nagayamaryoga.github.io/dotfiles/install.sh | sh

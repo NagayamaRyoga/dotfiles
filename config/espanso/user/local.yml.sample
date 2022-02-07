@@ -1,0 +1,6 @@
+name: local
+parent: default
+
+matches:
+  - trigger: ";local"
+    replace: "local snippets"

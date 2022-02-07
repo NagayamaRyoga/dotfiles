@@ -1,0 +1,5 @@
+% git
+# Git: Ignore local changes
+git update-index --assume-unchanged <file>
+
+$ file: fd

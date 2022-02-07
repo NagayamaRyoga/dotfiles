@@ -1,0 +1,21 @@
+# espanso configuration file
+
+# This is the default configuration file, change it as you like it
+# You can refer to the official documentation:
+# https://espanso.org/docs/
+
+# Matches are the substitution rules, when you type the "trigger" string
+# it gets replaced by the "replace" string.
+secure_input_notification: false
+undo_backspace: false
+toggle_key: OFF
+
+matches:
+  - trigger: ";id"
+    replace: "NagayamaRyogas"
+
+  - trigger: ";mail"
+    replace: "nagayama15@sec.is.kit.ac.jp"
+
+  - trigger: ";gh"
+    replace: "github.com"

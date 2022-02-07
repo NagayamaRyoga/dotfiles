@@ -1,0 +1,6 @@
+--map-syntax=".clang-format:YAML"
+--map-syntax="vimrc:VimL"
+--map-syntax="**/git/conf.d/*.conf*:Git Config"
+--map-syntax="ignore:Git Ignore"
+--map-syntax="{.tmux,tmux}.conf:Bourne Again Shell (bash)"
+--map-syntax="*.editorconfig:INI"

@@ -1,0 +1,213 @@
+syntax on
+filetype plugin on
+
+""" Options """
+set fenc=utf-8
+set hidden
+set autoread
+set showcmd
+" Indentation
+set autoindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set shiftround
+set smarttab
+set list
+set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:%
+" Views
+set title
+set number
+set relativenumber
+set cursorline
+set showmatch
+set laststatus=2
+set statusline=%F%m\ %<[%{&fenc!=''?&fenc:&enc}]\ [%Y]\ [ln:%l,col:%v]
+set showtabline=2
+" Controls
+set mouse=a
+set whichwrap=b,s,h,l,<,>,[,],~
+" Search
+set hlsearch
+set incsearch
+set smartcase
+set ignorecase
+" Split
+set splitbelow
+set splitright
+" Backspace
+set backspace=indent,eol,start
+" Menu
+set wildmenu
+set wildmode=longest:full,full
+
+" .viminfo
+set viminfo+=n~/.local/share/vim/viminfo
+
+""" Keymaps """
+nnoremap ;      :
+nnoremap <silent>j      gj
+nnoremap <silent>k      gk
+nnoremap <silent><Down> gj
+nnoremap <silent><Up>   gk
+nnoremap <silent>sh     <C-w>h
+nnoremap <silent>sj     <C-w>j
+nnoremap <silent>sk     <C-w>k
+nnoremap <silent>sl     <C-w>l
+nnoremap <silent>sH     <C-w>H
+nnoremap <silent>sJ     <C-w>J
+nnoremap <silent>sK     <C-w>K
+nnoremap <silent>sL     <C-w>L
+nnoremap <silent><C-a>  ^
+nnoremap <silent><C-e>  $
+nnoremap <silent>+      <C-a>
+nnoremap <silent>-      <C-x>
+nnoremap <silent><C-\>  :vsplit<CR>
+nnoremap <silent><C-_>  :split<CR>
+nnoremap <silent><C-h>  :bprev<CR>
+nnoremap <silent><C-l>  :bnext<CR>
+nnoremap <silent><C-w>  :bdelete<CR>
+nnoremap <silent><C-k><C-w> :close<CR>
+inoremap <silent>jj     <ESC>
+inoremap <silent><Down> <C-\><C-o>gj
+inoremap <silent><Up>   <C-\><C-o>gk
+inoremap <silent><S-Tab> <C-\><C-o><<
+inoremap <silent><C-a>  <C-o>I
+inoremap <silent><C-e>  <End>
+vnoremap <silent><C-a>  ^
+vnoremap <silent><C-e>  $
+vnoremap <silent>+      <C-a>gv
+vnoremap <silent>-      <C-x>gv
+" vnoremap <silent><C-i>  g<C-a>gv
+" vnoremap <silent>I      g<C-x>gv
+
+augroup MyKeyMaps
+    autocmd!
+    autocmd FileType html inoremap <buffer></ </<C-x><C-o>
+augroup END
+
+""" terminal """
+command! -nargs=* T botright term <args>
+
+""" Packages """
+let g:Packages = {}
+let g:PackageDir = $HOME . '/.vim/pack/plugins'
+
+function! Package(repo, ...)
+    let arg = get(a:, 1, {})
+    let base = has_key(arg, 'base') ? arg.base : 'start'
+
+    let url = 'https://github.com/' . a:repo
+    let path = g:PackageDir . '/' . base . '/' . substitute(a:repo, '/', '--', 'g')
+
+    let g:Packages[a:repo] = {
+    \   'path': path,
+    \   'url': url,
+    \   'arg': arg,
+    \ }
+
+    if isdirectory(path)
+        return
+    endif
+
+    echo 'install ' . a:repo
+    echo system('git clone ' . shellescape(url) . ' ' . shellescape(path))
+
+    if has_key(arg, 'build')
+        echo system('cd ' . shellescape(path) . ';' . arg.build)
+    endif
+endfunction
+
+function! PackageUpdate()
+    for repo in keys(g:Packages)
+        let path = g:Packages[repo].path
+
+        echo 'update ' . repo
+        echo system('git -C ' . shellescape(path) . ' pull')
+    endfor
+endfunction
+
+command! PackageUpdate call PackageUpdate()
+
+" Editorconfig
+call Package('editorconfig/editorconfig-vim')
+
+" lightline.vim
+call Package('itchyny/lightline.vim')
+call Package('mengelbrecht/lightline-bufferline')
+
+let g:lightline = {
+\   'colorscheme': 'one',
+\   'active': {
+\       'left': [ [ 'mode', 'paste'  ], [ 'readonly', 'filename', 'modified'  ]  ]
+\   },
+\   'tabline': {
+\       'left': [ ['buffers']  ],
+\       'right': [ ['close']  ]
+\   },
+\   'component_expand': {
+\       'buffers': 'lightline#bufferline#buffers'
+\   },
+\   'component_type': {
+\       'buffers': 'tabsel'
+\   }
+\ }
+
+" Colorschemes
+call Package('tomasiser/vim-code-dark')
+
+colorscheme codedark
+
+" vim-gitgutter
+call Package('airblade/vim-gitgutter')
+
+" vim-fugitive
+call Package('tpope/vim-fugitive')
+
+" nerdtree
+call Package('preservim/nerdtree')
+
+nnoremap <silent><C-o> :NERDTreeToggle<CR>
+
+" lexima.vim
+call Package('cohama/lexima.vim')
+
+" vim-surround
+call Package('tpope/vim-surround')
+
+" vim-expand-region
+call Package('terryma/vim-expand-region')
+
+vmap v <Plug>(expand_region_expand)
+vmap V <Plug>(expand_region_shrink)
+
+" asynchronous lint engine
+call Package('dense-analysis/ale')
+
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines'],
+\   'c': ['clang-format'],
+\   'cpp': ['clang-format'],
+\ }
+
+" nerdcommenter
+call Package('preservim/nerdcommenter')
+
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+let g:NERDDefaultAlign = 'left'
+
+nmap <C-c> <Plug>NERDCommenterToggle
+vmap <C-c> <Plug>NERDCommenterToggle<CR>gv
+
+" fzf.vim
+call Package('junegunn/fzf', { 'build': 'bash install --bin' })
+call Package('junegunn/fzf.vim')
+
+nnoremap <silent>//     :BLines<CR>
+nnoremap <silent><C-f>  :Lines<CR>
+nnoremap <silent><C-p>  :Files<CR>
+
+" vim-highlightedyank
+call Package('machakann/vim-highlightedyank')

@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+# from hub-sync
+# https://github.com/github/hub/blob/master/commands/sync.go
+
+green="\e[32m"
+light_green="\e[32;1m"
+red="\e[31m"
+light_red="\e[31;1m"
+reset_color="\e[0m"
+
+git rev-parse || exit 1
+
+default_branch="$(git config init.defaultBranch)"
+if ! git rev-parse --verify -q "$default_branch" >/dev/null; then
+    default_branch="master"
+fi
+
+remote="$(git remote | head -n1)"
+full_default_branch="refs/remotes/$remote/$default_branch"
+current_branch="$(git symbolic-ref --short HEAD)"
+
+git fetch --prune --progress "$remote"
+
+branches="$(git branch --list --format="%(refname)")"
+
+for full_branch in $branches; do
+    branch="${full_branch#refs/heads/}"
+    remote_branch="refs/remotes/$remote/$branch"
+    gone=0
+
+    if [ "$(git config branch."$branch".remote)" = "$remote" ]; then
+        if ! remote_branch="$(git rev-parse -q --symbolic-full-name "$branch@{upstream}" 2>/dev/null)"; then
+            remote_branch=""
+            gone=1
+        fi
+    elif [ ! -f "$(git rev-parse --git-path "remote_branch")" ]; then
+        remote_branch=""
+    fi
+
+    if [ -n "$remote_branch" ]; then
+        local_hash="$(git rev-parse -q "$full_branch")"
+        remote_hash="$(git rev-parse -q "$remote_branch")"
+
+        if [ "$local_hash" = "$remote_hash" ]; then
+            :
+        elif git merge-base --is-ancestor "$local_hash" "$remote_hash"; then
+            if [ "$branch" = "$current_branch" ]; then
+                git merge --ff-only --quiet "$remote_branch"
+            else
+                git update-ref "$full_branch" "$remote_branch"
+            fi
+            echo -e "${green}Updated branch ${light_green}${branch}${reset_color} (was ${local_hash::7})."
+        else
+            echo "warning: '${branch}' seems to contain unpushed commits" >/dev/stderr
+        fi
+    elif [ "$gone" -eq 1 ]; then
+        local_hash="$(git rev-parse -q "$full_branch")"
+
+        if git merge-base --is-ancestor "$full_branch" "$full_default_branch"; then
+            if [ "$branch" = "$current_branch" ]; then
+                git switch "$default_branch"
+                current_branch="$default_branch"
+            fi
+            git branch -D "$branch" >/dev/null
+            echo -e "${red}Deleted branch ${light_red}${branch}${reset_color} (was ${local_hash::7})."
+        else
+            echo "warning: '${branch}' was deleted on ${remote}, but appears not merged into '${default_branch}'"
+        fi
+    fi
+done

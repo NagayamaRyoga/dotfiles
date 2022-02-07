@@ -1,0 +1,3 @@
+--abort	cancel revert or cherry-pick sequence
+--continue	resume revert or cherry-pick sequence
+--skip	skip current commit and continue

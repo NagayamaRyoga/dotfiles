@@ -1,0 +1,28 @@
+disableStartupPopups: true
+quitOnTopLevelReturn: true
+notARepository: 'skip'
+
+git:
+  disableForcePushing: true
+  paging:
+    colorArg: always
+    pager: delta --paging=never
+  parseEmoji: true
+
+gui:
+  showRandomTip: false
+
+os:
+  openCommand: "code --goto -- {{filename}}"
+  editCommandTemplate: "{{editor}} +{{line}} -- {{filename}}"
+
+keybinding:
+  commits:
+    viewResetOptions: 'G'
+
+customCommands:
+  - key: "C"
+    command: "git cz"
+    context: "files"
+    loadingText: "opening commitizen commit tool"
+    subprocess: true

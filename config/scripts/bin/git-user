@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+profile="$1"
+
+if [ "$profile" == "--unset" ]; then
+    git config --unset user.name
+    git config --unset user.email
+    git config --unset user.signingKey
+    exit
+fi
+
+if [ "$#" -gt 0 ]; then
+    email="$(git config users."$profile".email)"
+    name="$(git config users."$profile".name)"
+    signingKey="$(git config users."$profile".signingKey)"
+
+    if [ -z "$email" ] || [ -z "$name" ]; then
+        echo "No such user $profile"
+        exit 1
+    fi
+
+    prev_committer_email="$(git --no-pager show --quiet --pretty="format:%ce" 2>/dev/null)"
+    if [ -n "$prev_committer_email" ] && [ "$prev_committer_email" != "$email" ]; then
+        committer="$(git --no-pager show --quiet --pretty="format:%cn <%ce>")"
+        printf "\x1b[41m!!! The Last Committer is %s !!!\x1b[m\n" "$committer"
+    fi
+
+    git config user.name "$name"
+    git config user.email "$email"
+    git config user.signingKey "$signingKey"
+fi
+
+if ! name="$(git config user.name)"; then
+    echo "git config user.name is not set"
+    exit 1
+fi
+
+if ! email="$(git config user.email)"; then
+    echo "git config user.email is not set"
+    exit 1
+fi
+
+echo "$name <$email>"

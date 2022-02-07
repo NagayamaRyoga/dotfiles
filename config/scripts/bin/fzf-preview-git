@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+if [ "$#" -ne 1 ]; then
+    echo "$0 <directory>"
+    return 1
+elif [ ! -d "$1/.git" ]; then
+    echo "$1 is not a git directory"
+    return 1
+elif [ -f "$1/README.md" ]; then
+    cd "$(realpath -- "$1")" || return 1
+    fzf-preview-file "README.md"
+elif [ -f "$1/README" ]; then
+    cd "$(realpath -- "$1")" || return 1
+    fzf-preview-file "README"
+else
+    git -C "$1" log --graph --color -n50
+fi

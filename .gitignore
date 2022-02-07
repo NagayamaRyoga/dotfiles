@@ -1,0 +1,8 @@
+### Local settings ###
+*.local
+local.*
+!local.*.sample
+
+### Zsh cache ###
+*.zwc
+.zcomp*

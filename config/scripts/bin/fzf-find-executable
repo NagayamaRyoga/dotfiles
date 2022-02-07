@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+echo "${(F)commands}" | fzf --preview="man \"\$(basename {})\"" --preview-window="right:50%"

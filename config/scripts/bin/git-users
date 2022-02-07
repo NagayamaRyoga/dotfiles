@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+git config --get-regex '^users\.[^.]+\.email' |
+    sed -e 's/^users\.\([^.]*\)\.email.*/\1/' |
+    while read -r k; do
+        name="$(git config users."$k".name)"
+        email="$(git config users."$k".email)"
+        [ -n "$name" ] && [ -n "$email" ] && echo "$k: $name <$email>"
+    done

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+if [ "$#" -eq 0 ]; then
+    echo "Usage: git-exec <CMD>..."
+    exit 1
+fi
+
+git diff --shortstat --exit-code --quiet
+is_dirty="$?"
+if [ "$is_dirty" -ne 0 ]; then
+    echo "repository is dirty..."
+    exit 2
+fi
+
+git diff --shortstat --exit-code --quiet --staged
+is_uncommitted="$?"
+if [ "$is_uncommitted" -ne 0 ]; then
+    echo "changes are not committed yet..."
+    exit 3
+fi
+
+"$@"
+git add -A && git commit -m "\$ $*"

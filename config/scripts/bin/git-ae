@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+git rev-parse --is-inside-work-tree >/dev/null || return 1
+
+if [ "$#" -gt 0 ]; then
+    git add -e "$@"
+    return
+fi
+
+pager="$(git config core.pager || echo cat)"
+extract="sed -e 's/^.. //'"
+
+preview="
+    file=\$(echo {} | sed -e 's/^.. //')
+    if (git status -s -- \$file | grep '^??') &>/dev/null; then
+        git diff --color=always --no-index -- /dev/null \$file | $pager
+    else
+        git diff --color=always -- \$file | $pager
+    fi
+"
+
+git_status="git -c color.status=always -c status.relativePaths=true status -su"
+files="$(FZF_DEFAULT_COMMAND="$git_status" fzf --exit-0 --multi --preview="$preview" --bind="ctrl-r:reload($git_status)" | sed -e 's/^.. //')"
+
+[ -z "$files" ] && return 1
+
+git add -e -- "${(f)files}"
+git status -su

@@ -1,0 +1,9 @@
+% ssh
+# Edit SSH config
+e ~/.ssh/config
+
+# Generate SSH key (ED25519)
+ssh-keygen -t ed25519
+
+# Generate SSH key (RSA)
+ssh-keygen -t rsa -b 4096
