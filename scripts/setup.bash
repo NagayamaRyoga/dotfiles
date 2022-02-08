@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x
+set -eux
 # shellcheck source=./scripts/common.bash
 source "$(dirname "$0")/common.bash"
 

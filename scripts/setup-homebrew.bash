@@ -18,3 +18,5 @@ brew update
 
 echo "Installing Homebrew apps..."
 brew bundle install --file "${REPO_DIR}/config/homebrew/Brewfile" --no-lock --verbose
+
+true
