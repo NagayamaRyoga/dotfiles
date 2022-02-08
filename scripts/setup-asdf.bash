@@ -21,5 +21,4 @@ else
 
     echo "Installing asdf-vm plugins..."
     asdf plugin add nodejs
-    /bin/bash "${ASDF_DATA_DIR}/plugins/nodejs/bin/import-release-team-keyring"
 fi
