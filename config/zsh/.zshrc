@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 ### zinit ###
 typeset -gAH ZINIT
 export ZINIT[HOME_DIR]="$XDG_DATA_HOME/zinit"
@@ -48,11 +41,36 @@ setopt MAGIC_EQUAL_SUBST
 setopt PRINT_EIGHT_BIT
 
 ### theme ###
-zinit light-mode \
-    atload'source "$XDG_CONFIG_HOME/p10k/p10k.zsh"'\
-    for 'romkatv/powerlevel10k'
+zinit light-mode from'gh-r' as'program' \
+    mv'almel* -> almel' \
+    for 'Ryooooooga/almel'
+
+almel_preexec() {
+    unset ALMEL_STATUS
+    ALMEL_START="$EPOCHREALTIME"
+}
+
+almel_precmd() {
+    local s="${ALMEL_STATUS:-$?}"
+    local j="$#jobstates"
+    local end="$EPOCHREALTIME"
+    local dur="$(($end - ${ALMEL_START:-$end}))"
+    PROMPT="$(almel prompt zsh -s"$s" -j"$j" -d"$dur")"
+    unset ALMEL_START
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd almel_precmd
+add-zsh-hook preexec almel_preexec
 
 ### key bindings ###
+clear-screen-and-update-prompt() {
+    ALMEL_STATUS=0
+    almel_precmd
+    zle .clear-screen
+}
+zle -N clear-screen clear-screen-and-update-prompt
+
 select-history() {
     local selected="$(history -nr 1 | awk '!a[$0]++' | fzf --exit-0 --query "$LBUFFER" | sed 's/\\n/\n/g')"
     if [ -n "$selected" ]; then
@@ -72,8 +90,13 @@ select-cdr() {
 }
 
 select-ghq() {
+    function __ghq-source() {
+        ghq list | sort
+    }
     local root="$(ghq root)"
-    local selected="$(ghq list | sort | fzf --exit-0 --preview="fzf-preview-git ${(q)root}/{}" --preview-window="right:60%")"
+    local selected="$(__ghq-source | fzf --exit-0 --preview="fzf-preview-git ${(q)root}/{}" --preview-window="right:60%")"
+    unfunction __ghq-source
+
     if [ -n "$selected" ]; then
         local repo_dir="$(ghq list --exact --full-path "$selected")"
         BUFFER="cd ${(q)repo_dir}"
@@ -83,8 +106,23 @@ select-ghq() {
 }
 
 select-ghq-session() {
+    function __ghq-source() {
+        local session color icon reset="\e[m"
+        local sessions=($(tmux list-sessions -F "#S" 2>/dev/null))
+        ghq list | sort | while read -r repo; do
+            session="$(sed -E 's/[:. ]/-/g' <<<"$repo")"
+            color="\e[34m"
+            icon="\uf630"
+            if (( ${+sessions[(r)$session]} )); then
+                color="\e[32m"
+                icon="\uf631"
+            fi
+            printf "$color$icon %s$reset\n" "$repo"
+        done
+    }
     local root="$(ghq root)"
-    local selected="$(ghq list | sort | fzf --exit-0 --preview="fzf-preview-git ${(q)root}/{}" --preview-window="right:60%")"
+    local selected="$(__ghq-source | fzf --exit-0 --preview="fzf-preview-git ${(q)root}/{+2}" --preview-window="right:60%" | cut -d' ' -f2)"
+    unfunction __ghq-source
 
     if [ -z "$selected" ]; then
         return

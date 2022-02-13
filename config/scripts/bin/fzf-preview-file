@@ -8,10 +8,9 @@ elif [ ! -e "$1" ]; then
 elif [ -d "$1" ]; then
     fzf-preview-directory "$1"
 elif [[ "$(file --mime -- "$1")" =~ "binary" ]]; then
-    hexyl --length=1KiB -- "$1"
+    hexyl --length=8KiB -- "$1"
 elif (( ${+commands[bat]} )); then
     bat --line-range=":200" --color=always -- "$1"
 else
     head -n200 -- "$1"
 fi
-

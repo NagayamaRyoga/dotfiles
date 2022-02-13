@@ -156,6 +156,12 @@ snippets:
     context:
       lbuffer: ^git\s
 
+  - name: git pst
+    keyword: pst
+    snippet: push --tags
+    context:
+      lbuffer: ^git\s
+
   - name: git push -f
     keyword: -f
     snippet: --force-with-lease
@@ -194,6 +200,13 @@ snippets:
   - name: B
     keyword: B
     snippet: git symbolic-ref --short HEAD
+    evaluate: true
+    context:
+      lbuffer: ^git\s
+
+  - name: OB
+    keyword: OB
+    snippet: zsh -c "echo origin/$(git symbolic-ref --short HEAD)"
     evaluate: true
     context:
       lbuffer: ^git\s
@@ -295,6 +308,25 @@ snippets:
   - name: teep
     keyword: teep
     snippet: tee >(pp)
+
+  # date
+  - name: yyyymmdd
+    keyword: yyyymmdd
+    snippet: date "+%Y%m%d"
+    evaluate: true
+    global: true
+
+  - name: yyyy-mm-dd
+    keyword: yyyy-mm-dd
+    snippet: date "+%Y-%m-%d"
+    evaluate: true
+    global: true
+
+  - name: yyyy/mm/dd
+    keyword: yyyy/mm/dd
+    snippet: date "+%Y/%m/%d"
+    evaluate: true
+    global: true
 
   # coreutils
   - name: tailf

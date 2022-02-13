@@ -1,6 +1,7 @@
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 
+brew "autoconf"
 brew "bash"
 brew "bat"
 brew "cmake"
@@ -41,6 +42,7 @@ brew "itchyny/tap/mmv"
 
 cask "alacritty"
 cask "alfred"
+cask "bitwarden"
 cask "docker"
 cask "firefox"
 cask "font-jetbrains-mono-nerd-font"
