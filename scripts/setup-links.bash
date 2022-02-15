@@ -15,8 +15,7 @@ fi
 
 mkdir -p \
     "$XDG_CONFIG_HOME" \
-    "$XDG_DATA_HOME/vim" \
-    "$XDG_DATA_HOME/tealdeer"
+    "$XDG_DATA_HOME/vim"
 
 ln -sfv "$REPO_DIR/config/"* "$XDG_CONFIG_HOME"
 ln -sfv "$XDG_CONFIG_HOME/zsh/.zshenv" "$HOME/.zshenv"

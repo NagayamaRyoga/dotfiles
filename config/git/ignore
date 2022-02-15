@@ -19,9 +19,6 @@
 compile_commands.json
 compile_flags.txt
 
-### GDB ###
-.gdb_history
-
 ### Node.js ###
 node_modules/
 
@@ -31,10 +28,6 @@ node_modules/
 ### Bundle ###
 .bundle/
 
-### Bazel ###
-.bazelrc
-user.bazelrc
-
 ### Memo ###
 _MEMO*
 _memo*
@@ -42,6 +35,3 @@ _TODO*
 _todo*
 _TEST*
 _test*
-
-### qtmut ###
-.qtmut.yaml

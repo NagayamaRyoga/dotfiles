@@ -76,19 +76,19 @@ __zsh_history_substring_search_atload() {
     bindkey "^[[A" history-substring-search-up   # arrow-up
     bindkey "^[[B" history-substring-search-down # arrow-down
 }
-zinit wait lucid light-mode \
+zinit wait lucid light-mode for \
     atload'__zsh_history_substring_search_atload' \
-    for 'zsh-users/zsh-history-substring-search'
+    @'zsh-users/zsh-history-substring-search'
 
 ### zsh-autopair ###
 zinit wait'1' lucid light-mode for \
-    'hlissner/zsh-autopair'
+    @'hlissner/zsh-autopair'
 
 ### zsh plugins ###
 zinit wait lucid blockf light-mode for \
-    'zsh-users/zsh-autosuggestions' \
-    'zsh-users/zsh-completions' \
-    'zdharma-continuum/fast-syntax-highlighting'
+    @'zsh-users/zsh-autosuggestions' \
+    @'zsh-users/zsh-completions' \
+    @'zdharma-continuum/fast-syntax-highlighting'
 
 ### programs ###
 zinit wait lucid light-mode as'program' from'gh-r' for \
@@ -110,7 +110,7 @@ zinit wait lucid light-mode for \
 zinit wait lucid light-mode as'program' from'gh-r' for \
     pick'gh*/bin/gh' \
     atclone'./gh*/bin/gh completion -s zsh >_gh' atpull'%atclone' \
-    'cli/cli'
+    @'cli/cli'
 
 ### exa ###
 __exa_atload() {
@@ -123,46 +123,43 @@ zinit wait lucid light-mode as'program' from'gh-r' for \
     pick'bin/exa' \
     atclone'cp -f completions/exa.zsh _exa' atpull'%atclone' \
     atload'__exa_atload' \
-    'ogham/exa'
+    @'ogham/exa'
 
 ### tealdeer ###
 zinit wait lucid light-mode as'program' from'gh-r' for \
     if'[[ "$OSTYPE" =~ "linux" ]]' \
     mv'tldr* -> tldr' \
-    'dbrgn/tealdeer'
+    @'dbrgn/tealdeer'
 
 ### yq ###
 zinit wait lucid light-mode as'program' from'gh-r' for \
     mv'yq* -> yq' \
     atclone'./yq shell-completion zsh >_yq' atpull'%atclone' \
-    'mikefarah/yq'
+    @'mikefarah/yq'
 
 ### hgrep ###
 __hgrep_atload() {
     alias hgrep="hgrep --hidden --glob='!.git/'"
 }
-
-zinit wait lucid light-mode as'program' from'gh-r' \
+zinit wait lucid light-mode as'program' from'gh-r' for \
     pick'hgrep*/hgrep' \
     atload'__hgrep_atload' \
-    for 'rhysd/hgrep'
+    @'rhysd/hgrep'
 
 ### navi ###
 __navi_search() {
     LBUFFER="$(navi --print --query="$LBUFFER")"
     zle reset-prompt
 }
-
 __navi_atload() {
     export NAVI_CONFIG="$XDG_CONFIG_HOME/navi/config.yaml"
 
     zle -N __navi_search
     bindkey '^K' __navi_search
 }
-
 zinit wait lucid light-mode as'program' from'gh-r' for \
     atload'__navi_atload' \
-    'denisidoro/navi'
+    @'denisidoro/navi'
 
 ### zeno.zsh ###
 export ZENO_HOME="$XDG_CONFIG_HOME/zeno"
@@ -177,14 +174,14 @@ __zeno_atload() {
     bindkey '^P' zeno-completion
 }
 
-zinit wait lucid light-mode \
+zinit wait lucid light-mode for \
     atload'__zeno_atload' \
-    for yuki-yano/zeno.zsh
+    @'yuki-yano/zeno.zsh'
 
 ### Emojify ###
-zinit wait lucid light-mode as'program' \
+zinit wait lucid light-mode as'program' for \
     atclone'rm -f *.{py,bats}' atpull'%atclone' \
-    for 'mrowa44/emojify'
+    @'mrowa44/emojify'
 
 ### Forgit ###
 __forgit_atload() {
@@ -193,11 +190,10 @@ __forgit_atload() {
     export FORGIT_GI_REPO_LOCAL="$XDG_DATA_HOME/gitignore"
     export FORGIT_GI_TEMPLATES="$FORGIT_GI_REPO_LOCAL/templates"
 }
-
-zinit wait lucid light-mode as'program' \
+zinit wait lucid light-mode as'program' for \
     atload'__forgit_atload' \
     pick'bin/git-forgit' \
-    for 'wfxr/forgit'
+    @'wfxr/forgit'
 
 ### zsh-replace-multiple-dots ###
 __replace_multiple_dots_atload() {
@@ -213,13 +209,13 @@ __replace_multiple_dots_atload() {
     zle -N replace_multiple_dots replace_multiple_dots_exclude_go
 }
 
-zinit wait lucid light-mode \
+zinit wait lucid light-mode for \
     atload'__replace_multiple_dots_atload' \
-    for 'momo-lab/zsh-replace-multiple-dots'
+    @'momo-lab/zsh-replace-multiple-dots'
 
 ### chpwd-recent-dirs ###
 add-zsh-hook chpwd chpwd_recent_dirs
-zstyle ':chpwd:*' recent-dirs-file "$XDG_CACHE_HOME/chpwd-recent-dirs"
+zstyle ':chpwd:*' recent-dirs-file "$XDG_STATE_HOME/chpwd-recent-dirs"
 
 ### ls-colors ###
 export LS_COLORS="di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32"
@@ -235,7 +231,7 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 export GPG_TTY="$(tty)"
 
 ### wget ###
-alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
+alias wget='wget --hsts-file="$XDG_STATE_HOME/wget-hsts"'
 
 ### Make ###
 alias make='make -j$(($(nproc)+1))'
@@ -297,30 +293,14 @@ alias -s {bz2,gz,tar,xz}='tar xvf'
 alias -s zip=unzip
 alias -s d=rdmd
 
-### Go ###
-export GOPATH="$XDG_DATA_HOME/go"
-export GO111MODULE="on"
-
-path=("$GOPATH/bin"(N-/) "$path[@]")
-
 ### Node.js ###
-export NODE_REPL_HISTORY="$XDG_CACHE_HOME/node_history"
+export NODE_REPL_HISTORY="$XDG_STATE_HOME/node_history"
 
 ### npm ###
 export NPM_CONFIG_DIR="$XDG_CONFIG_HOME/npm"
 export NPM_DATA_DIR="$XDG_DATA_HOME/npm"
 export NPM_CACHE_DIR="$XDG_CACHE_HOME/npm"
 export NPM_CONFIG_USERCONFIG="$NPM_CONFIG_DIR/npmrc"
-
-### Rubygems ###
-export GEM_HOME="$XDG_DATA_HOME/gem"
-export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
-
-export BUNDLE_USER_HOME="$XDG_CONFIG_HOME/bundle"
-export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
-export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle/plugin"
-
-path=("$GEM_HOME/bin"(N-/) "$path[@]")
 
 ### irb ###
 export IRBRC="$XDG_CONFIG_HOME/irb/irbrc"
@@ -334,13 +314,13 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/startup.py"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 
 ### SQLite3 ###
-export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
+export SQLITE_HISTORY="$XDG_STATE_HOME/sqlite_history"
 
 ### MySQL ###
-export MYSQL_HISTFILE="$XDG_CACHE_HOME/mysql_history"
+export MYSQL_HISTFILE="$XDG_STATE_HOME/mysql_history"
 
 ### PostgreSQL ###
-export PSQL_HISTORY="$XDG_CACHE_HOME/psql_history"
+export PSQL_HISTORY="$XDG_STATE_HOME/psql_history"
 
 ### tealdeer ###
 export TEALDEER_CONFIG_DIR="$XDG_CONFIG_HOME/tealdeer"
