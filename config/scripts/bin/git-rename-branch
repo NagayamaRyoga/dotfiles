@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -u
+git rev-parse 2>/dev/null || exit 1
+
+file="$(mktemp)"
+
+old_branch="$(git branch --show-current)"
+command echo "$old_branch" >"$file"
+
+"${EDITOR}" "$file"
+
+new_branch="$(command cat "$file")"
+git branch -m "$old_branch" "$new_branch"
+exit_status="$?"
+
+command rm "$file"
+exit "$exit_status"

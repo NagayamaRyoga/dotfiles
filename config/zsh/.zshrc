@@ -42,6 +42,11 @@ setopt NO_SHARE_HISTORY
 setopt MAGIC_EQUAL_SUBST
 setopt PRINT_EIGHT_BIT
 
+zshaddhistory() {
+    local line="${1%%$'\n'}"
+    [[ ! "$line" =~ "^(cd|lazygit|la|ll|ls|rm|rmdir)($| )" ]]
+}
+
 ### theme ###
 zinit light-mode from'gh-r' as'program' \
     mv'almel* -> almel' \
@@ -175,6 +180,7 @@ bindkey "^[g"       select-ghq                      # Alt-g
 bindkey "^O"        select-dir                      # C-o
 bindkey "^A"        beginning-of-line               # C-a
 bindkey "^E"        end-of-line                     # C-e
+bindkey "^K"        kill-line                       # C-k
 bindkey "^W"        vi-backward-kill-word           # C-w
 bindkey "^X^W"      forward-kill-word               # C-x C-w
 bindkey "^?"        backward-delete-char            # backspace

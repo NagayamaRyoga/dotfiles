@@ -1,4 +1,4 @@
-xdg_cache_home = ENV['XDG_CACHE_HOME'] || "#{ENV['HOME']}/.cache"
+xdg_state_home = ENV['XDG_STATE_HOME'] || "#{ENV['HOME']}/.local/state"
 
-IRB.conf[:HISTORY_FILE] = "#{xdg_cache_home}/irb_history"
+IRB.conf[:HISTORY_FILE] = "#{xdg_state_home}/irb_history"
 IRB.conf[:SAVE_HISTORY] = 1000

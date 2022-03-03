@@ -333,6 +333,21 @@ snippets:
     keyword: tailf
     snippet: tail -f
 
+  # --version
+  - name: python -v
+    keyword: -v
+    snippet: -V
+    global: true
+    context:
+      lbuffer: ^(python3?|pip3?)\s
+
+  - name: java -v
+    keyword: -v
+    snippet: -version
+    global: true
+    context:
+      lbuffer: ^java\s
+
 .default-options: &default-options
   --exit-0: true
   --select-1: true
