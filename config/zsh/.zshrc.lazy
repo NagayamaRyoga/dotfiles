@@ -102,14 +102,15 @@ zinit wait lucid blockf light-mode for \
 
 ### programs ###
 zinit wait lucid light-mode as'program' from'gh-r' for \
-    pick'delta*/delta'  @'dandavison/delta' \
-    pick'mmv*/mmv'      @'itchyny/mmv' \
-    pick'ripgrep*/rg'   @'BurntSushi/ripgrep'
+    pick'delta*/delta'      @'dandavison/delta' \
+    pick'mmv*/mmv'          @'itchyny/mmv' \
+    pick'ripgrep*/rg'       @'BurntSushi/ripgrep' \
+    mv'tealdeer* -> tldr'   @'dbrgn/tealdeer'
 
 ### asdf-vm ###
 __asdf_atload() {
     export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
-    export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/.asdfrc"
+    export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
 }
 zinit wait lucid light-mode for \
     atpull'asdf plugin update --all' \
