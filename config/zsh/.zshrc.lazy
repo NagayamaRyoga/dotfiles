@@ -48,6 +48,16 @@ esac
 
 mkcd() { command mkdir -p -- "$@" && builtin cd "$(realpath -- "${@[-1]}")" }
 
+j() {
+    local root dir
+    root="${$(git rev-parse --show-cdup 2>/dev/null):-.}"
+    dir="$((command echo "$root"; fd --hidden --type=d . "$root") | fzf --select-1 --query="$*" --preview='fzf-preview-directory {}')"
+    if [ -n "$dir" ]; then
+        builtin cd "$dir"
+        echo "$PWD"
+    fi
+}
+
 ### diff ###
 (( ${+commands[colordiff]} )) && alias diff='colordiff'
 

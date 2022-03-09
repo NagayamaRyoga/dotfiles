@@ -44,7 +44,7 @@ setopt PRINT_EIGHT_BIT
 
 zshaddhistory() {
     local line="${1%%$'\n'}"
-    [[ ! "$line" =~ "^(cd|lazygit|la|ll|ls|rm|rmdir)($| )" ]]
+    [[ ! "$line" =~ "^(cd|j|lazygit|la|ll|ls|rm|rmdir)($| )" ]]
 }
 
 ### theme ###
@@ -151,15 +151,6 @@ select-ghq-session() {
     zle -R -c # refresh screen
 }
 
-select-dir() {
-    local selected="$(fd --hidden --color=always --exclude='.git' --type=d . $(git rev-parse --show-cdup 2>/dev/null) | fzf --exit-0 --preview="fzf-preview-directory {}" --preview-window="right:50%")"
-    if [ -n "$selected" ]; then
-        BUFFER="cd $selected"
-        zle accept-line
-    fi
-    zle -R -c # refresh screen
-}
-
 forward-kill-word() {
     zle vi-forward-word
     zle vi-backward-kill-word
@@ -169,7 +160,6 @@ zle -N select-history
 zle -N select-cdr
 zle -N select-ghq
 zle -N select-ghq-session
-zle -N select-dir
 zle -N forward-kill-word
 
 bindkey -v
@@ -177,7 +167,6 @@ bindkey "^R"        select-history                  # C-r
 bindkey "^F"        select-cdr                      # C-f
 bindkey "^G"        select-ghq-session              # C-g
 bindkey "^[g"       select-ghq                      # Alt-g
-bindkey "^O"        select-dir                      # C-o
 bindkey "^A"        beginning-of-line               # C-a
 bindkey "^E"        end-of-line                     # C-e
 bindkey "^K"        kill-line                       # C-k
