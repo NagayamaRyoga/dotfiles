@@ -87,15 +87,6 @@ select-history() {
     zle -R -c # refresh screen
 }
 
-select-cdr() {
-    local selected="$(cdr -l | awk '{ $1=""; print }' | sed 's/^ //' | fzf --exit-0 --preview="fzf-preview-directory '{}'" --preview-window="right:50%")"
-    if [ -n "$selected" ]; then
-        BUFFER="cd $selected"
-        zle accept-line
-    fi
-    zle -R -c # refresh screen
-}
-
 select-ghq() {
     function __ghq-source() {
         ghq list | sort
@@ -157,14 +148,12 @@ forward-kill-word() {
 }
 
 zle -N select-history
-zle -N select-cdr
 zle -N select-ghq
 zle -N select-ghq-session
 zle -N forward-kill-word
 
 bindkey -v
 bindkey "^R"        select-history                  # C-r
-bindkey "^F"        select-cdr                      # C-f
 bindkey "^G"        select-ghq-session              # C-g
 bindkey "^[g"       select-ghq                      # Alt-g
 bindkey "^A"        beginning-of-line               # C-a
