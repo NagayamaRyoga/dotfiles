@@ -136,12 +136,6 @@ zinit wait lucid light-mode as'program' from'gh-r' for \
     atload'__exa_atload' \
     @'ogham/exa'
 
-### tealdeer ###
-zinit wait lucid light-mode as'program' from'gh-r' for \
-    if'[[ "$OSTYPE" =~ "linux" ]]' \
-    mv'tldr* -> tldr' \
-    @'dbrgn/tealdeer'
-
 ### yq ###
 zinit wait lucid light-mode as'program' from'gh-r' for \
     mv'yq* -> yq' \
