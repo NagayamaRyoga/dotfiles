@@ -44,7 +44,7 @@ setopt PRINT_EIGHT_BIT
 
 zshaddhistory() {
     local line="${1%%$'\n'}"
-    [[ ! "$line" =~ "^(cd|j|lazygit|la|ll|ls|rm|rmdir)($| )" ]]
+    [[ ! "$line" =~ "^(cd|jj?|lazygit|la|ll|ls|rm|rmdir)($| )" ]]
 }
 
 ### theme ###
@@ -92,7 +92,7 @@ widget::ghq::source() {
     local sessions=($(tmux list-sessions -F "#S" 2>/dev/null))
 
     ghq list | sort | while read -r repo; do
-        session="$(sed -E 's/[:. ]/-/g' <<<"$repo")"
+        session="${repo//[:. ]/-}"
         color="$blue"
         icon="$unchecked"
         if (( ${+sessions[(r)$session]} )); then
@@ -104,7 +104,7 @@ widget::ghq::source() {
 }
 widget::ghq::select() {
     local root="$(ghq root)"
-    widget::ghq::source | fzf --exit-0 --preview="fzf-preview-git ${(q)root}/{+2}" --preview-window="right:60%" | cut -c3-
+    widget::ghq::source | fzf --exit-0 --preview="fzf-preview-git ${(q)root}/{+2}" --preview-window="right:60%" | cut -d' ' -f2-
 }
 widget::ghq::dir() {
     local selected="$(widget::ghq::select)"
@@ -124,7 +124,7 @@ widget::ghq::session() {
     fi
 
     local repo_dir="$(ghq list --exact --full-path "$selected")"
-    local session_name="$(sed -E 's/[:. ]/-/g' <<<"$selected")"
+    local session_name="${selected//[:. ]/-}"
 
     if [ -z "$TMUX" ]; then
         BUFFER="tmux new-session -A -s ${(q)session_name} -c ${(q)repo_dir}"

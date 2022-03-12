@@ -51,11 +51,17 @@ mkcd() { command mkdir -p -- "$@" && builtin cd "$(realpath -- "${@[-1]}")" }
 j() {
     local root dir
     root="${$(git rev-parse --show-cdup 2>/dev/null):-.}"
-    dir="$((command echo "$root"; fd --hidden --type=d . "$root") | fzf --select-1 --query="$*" --preview='fzf-preview-directory {}')"
+    dir="$((fd --color=always --hidden --type=d . "$root") | fzf --select-1 --query="$*" --preview='fzf-preview-directory {}')"
     if [ -n "$dir" ]; then
         builtin cd "$dir"
         echo "$PWD"
     fi
+}
+
+jj() {
+    local root
+    root="$(git rev-parse --show-toplevel)" || return 1
+    builtin cd "$root"
 }
 
 ### diff ###
@@ -68,7 +74,7 @@ alias diffall='command diff --new-line-format="+%L" --old-line-format="-%L" --un
 
 ### FZF ###
 export FZF_DEFAULT_OPTS='--reverse --border --ansi --bind="ctrl-d:print-query,ctrl-p:replace-query"'
-export FZF_DEFAULT_COMMAND='fd --color=always --hidden'
+export FZF_DEFAULT_COMMAND='fd --hidden --color=always'
 
 ### bat ###
 export MANPAGER="sh -c 'col -bx | bat --color=always --language=man --plain'"
