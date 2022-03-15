@@ -107,10 +107,9 @@ zinit wait lucid blockf light-mode for \
 
 ### programs ###
 zinit wait lucid light-mode as'program' from'gh-r' for \
-    pick'delta*/delta'      @'dandavison/delta' \
-    pick'mmv*/mmv'          @'itchyny/mmv' \
-    pick'ripgrep*/rg'       @'BurntSushi/ripgrep' \
-    mv'tealdeer* -> tldr'   @'dbrgn/tealdeer'
+    pick'delta*/delta'  @'dandavison/delta' \
+    pick'mmv*/mmv'      @'itchyny/mmv' \
+    pick'ripgrep*/rg'   @'BurntSushi/ripgrep'
 
 ### asdf-vm ###
 __asdf_atload() {
@@ -221,6 +220,20 @@ zinit wait lucid light-mode for \
     atload'__replace_multiple_dots_atload' \
     @'momo-lab/zsh-replace-multiple-dots'
 
+### tealdeer ###
+__tealdeer_atclone() {
+    curl -sSL 'https://raw.githubusercontent.com/dbrgn/tealdeer/main/completion/zsh_tealdeer' -o _tealdeer
+}
+__tealdeer_atload() {
+    export TEALDEER_CONFIG_DIR="$XDG_CONFIG_HOME/tealdeer"
+    export TEALDEER_CACHE_DIR="$XDG_CACHE_HOME/tealdeer"
+}
+zinit wait lucid light-mode as'program' from'gh-r' for \
+    mv'tealdeer* -> tldr' \
+    atclone'__tealdeer_atclone' atpull'%atclone' \
+    atload'__tealdeer_atload' \
+    @'dbrgn/tealdeer'
+
 ### chpwd-recent-dirs ###
 add-zsh-hook chpwd chpwd_recent_dirs
 zstyle ':chpwd:*' recent-dirs-file "$XDG_STATE_HOME/chpwd-recent-dirs"
@@ -329,10 +342,6 @@ export MYSQL_HISTFILE="$XDG_STATE_HOME/mysql_history"
 
 ### PostgreSQL ###
 export PSQL_HISTORY="$XDG_STATE_HOME/psql_history"
-
-### tealdeer ###
-export TEALDEER_CONFIG_DIR="$XDG_CONFIG_HOME/tealdeer"
-export TEALDEER_CACHE_DIR="$XDG_CACHE_HOME/tealdeer"
 
 ### local ###
 if [ -f "$ZDOTDIR/.zshrc.local" ]; then
