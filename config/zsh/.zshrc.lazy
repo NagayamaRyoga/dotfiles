@@ -46,12 +46,12 @@ esac
 
 (( ${+commands[trash]} )) && alias rm='trash'
 
-mkcd() { command mkdir -p -- "$@" && builtin cd "$(realpath -- "${@[-1]}")" }
+mkcd() { command mkdir -p -- "$@" && builtin cd "${@[-1]:a}" }
 
 j() {
     local root dir
     root="${$(git rev-parse --show-cdup 2>/dev/null):-.}"
-    dir="$((fd --color=always --hidden --type=d . "$root") | fzf --select-1 --query="$*" --preview='fzf-preview-directory {}')"
+    dir="$(fd --color=always --hidden --type=d . "$root" | fzf --select-1 --query="$*" --preview='fzf-preview-directory {}')"
     if [ -n "$dir" ]; then
         builtin cd "$dir"
         echo "$PWD"
@@ -65,9 +65,8 @@ jj() {
 }
 
 ### diff ###
-(( ${+commands[colordiff]} )) && alias diff='colordiff'
-
-alias diffall='command diff --new-line-format="+%L" --old-line-format="-%L" --unchanged-line-format=" %L"'
+diff() { command diff "$@" | bat --paging=never --plain --language=diff }
+alias diffall='diff --new-line-format="+%L" --old-line-format="-%L" --unchanged-line-format=" %L"'
 
 ### direnv ###
 (( ${+commands[direnv]} )) && eval "$(direnv hook zsh)"
@@ -196,10 +195,8 @@ zinit wait lucid light-mode as'program' for \
 
 ### Forgit ###
 __forgit_atload() {
-    export FORGIT_INSTALL_DIR="${ZINIT[PLUGINS_DIR]}/wfxr---forgit"
+    export FORGIT_INSTALL_DIR="$PWD"
     export FORGIT_NO_ALIASES=1
-    export FORGIT_GI_REPO_LOCAL="$XDG_DATA_HOME/gitignore"
-    export FORGIT_GI_TEMPLATES="$FORGIT_GI_REPO_LOCAL/templates"
 }
 zinit wait lucid light-mode as'program' for \
     atload'__forgit_atload' \
@@ -343,7 +340,7 @@ if [ -f "$ZDOTDIR/.zshrc.local" ]; then
 fi
 
 ### autoloads ###
-autoload -Uz compinit && compinit
 autoload -Uz cdr
 autoload -Uz chpwd_recent_dirs
 autoload -Uz _zinit
+zpcompinit
