@@ -15,6 +15,7 @@ fi
 
 mkdir -p \
     "$XDG_CONFIG_HOME" \
+    "$XDG_STATE_HOME" \
     "$XDG_DATA_HOME/vim"
 
 ln -sfv "$REPO_DIR/config/"* "$XDG_CONFIG_HOME"

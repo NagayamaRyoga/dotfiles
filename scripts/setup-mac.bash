@@ -40,6 +40,9 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # Screen capture
 defaults write com.apple.screencapture disable-shadow -bool true
 
+# Configure hammerspoon config location
+defaults write org.hammerspoon.Hammerspoon MJConfigFile "$XDG_CONFIG_HOME/hammerspoon/init.lua"
+
 killall Dock
 killall Finder
 killall SystemUIServer
