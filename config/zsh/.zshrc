@@ -3,7 +3,6 @@ typeset -gAH ZINIT
 ZINIT[HOME_DIR]="$XDG_DATA_HOME/zinit"
 ZINIT[ZCOMPDUMP_PATH]="$XDG_STATE_HOME/zcompdump"
 source "${ZINIT[HOME_DIR]}/bin/zinit.zsh"
-(( ${+_comps} )) && _comps[zinit]=_zinit
 
 ### paths ###
 typeset -U path
@@ -80,7 +79,7 @@ clear-screen-and-update-prompt() {
 zle -N clear-screen clear-screen-and-update-prompt
 
 widget::history() {
-    local selected="$(history -nr 1 | awk '!a[$0]++' | fzf --exit-0 --query "$LBUFFER" | sed 's/\\n/\n/g')"
+    local selected="$(history -nr 1 | fzf --exit-0 --query "$LBUFFER" | sed 's/\\n/\n/g')"
     if [ -n "$selected" ]; then
         BUFFER="$selected"
         CURSOR=$#BUFFER
