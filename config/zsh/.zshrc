@@ -49,9 +49,9 @@ zshaddhistory() {
 }
 
 ### theme ###
-zinit light-mode from'gh-r' as'program' \
+zinit light-mode from'gh-r' as'program' for \
     mv'almel* -> almel' \
-    for 'Ryooooooga/almel'
+    @'Ryooooooga/almel'
 
 almel_preexec() {
     unset ALMEL_STATUS
@@ -184,6 +184,6 @@ zle -N zle-line-finish
 zle -N zle-keymap-select
 
 ### plugins ###
-zinit wait lucid light-mode as'null' for \
+zinit wait lucid null for \
     atinit'source "$ZDOTDIR/.zshrc.lazy"' \
     @'zdharma-continuum/null'
