@@ -368,7 +368,7 @@ completions:
   # basic command
   - name: file
     patterns:
-      - ^\s*(bat|cat|e|grep|head|hexdump|hexyl|less|nvim|sed|tail|vim|vi)(\s+\S+)*\s+$
+      - ^\s*(bat|cat|delta|diff|e|grep|head|hexdump|hexyl|less|nvim|sed|tail|vim|vi)(\s+\S+)*\s+$
     sourceCommand: fd --color=always --hidden --type=f
     options:
       <<: *multi-options

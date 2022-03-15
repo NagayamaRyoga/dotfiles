@@ -13,7 +13,6 @@ apt-get install -y \
     clangd \
     clang-format \
     cmake \
-    colordiff \
     direnv \
     fzf \
     git \
