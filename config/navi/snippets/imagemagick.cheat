@@ -1,0 +1,6 @@
+% imagemagick
+# ImageMagick: Compare images
+compare <image1> <image2> <out>
+
+$ image1: fd --type=f --color=always
+$ image2: fd --type=f --color=always
