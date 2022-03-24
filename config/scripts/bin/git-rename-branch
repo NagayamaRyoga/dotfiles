@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
 set -u
-git rev-parse 2>/dev/null || exit 1
+\command git rev-parse || exit 1
 
-file="$(mktemp)"
-
-old_branch="$(git branch --show-current | \command tee "$file")"
-"${EDITOR}" "$file"
-
-new_branch="$(\command cat "$file")"
-\command rm "$file"
-
-git branch -m "$old_branch" "$new_branch"
+old_branch="$(\command git branch --show-current)"
+new_branch="$(\command ped <<<"$old_branch")"
+\command git branch -m "$old_branch" "$new_branch"
