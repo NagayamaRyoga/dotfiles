@@ -192,7 +192,7 @@ snippets:
   # git tag
   - name: git tags
     keyword: tags
-    snippet: tag -l
+    snippet: tag -l --sort=v:refname
     context:
       lbuffer: ^git\s
 
