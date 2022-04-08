@@ -3,6 +3,7 @@ quitOnTopLevelReturn: true
 notARepository: 'skip'
 
 git:
+  autoFetch: false
   disableForcePushing: true
   paging:
     colorArg: always
