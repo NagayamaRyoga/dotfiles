@@ -25,8 +25,8 @@ fpath=(
 
 ### history ###
 export HISTFILE="$XDG_STATE_HOME/zsh_history"
-export HISTSIZE=1000
-export SAVEHIST=1000
+export HISTSIZE=12000
+export SAVEHIST=10000
 
 setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
@@ -49,37 +49,60 @@ zshaddhistory() {
 
 ### theme ###
 zinit light-mode from'gh-r' as'program' for \
-    mv'almel* -> almel' \
     @'Ryooooooga/almel'
 
-almel_preexec() {
+almel::preexec() {
     unset ALMEL_STATUS
     ALMEL_START="$EPOCHREALTIME"
 }
 
-almel_precmd() {
-    local s="${ALMEL_STATUS:-$?}"
-    local j="$#jobstates"
+almel::async::callback() {
+    PROMPT="$3"
+    zle .reset-prompt
+}
+
+almel::async::prompt() {
+    local exit_status="$1"
+    local jobs="$2"
+    local duration="$3"
+    almel prompt zsh --exit-status="$exit_status" --num-jobs="$jobs" --duration="$duration"
+}
+
+almel::async(){
+    async_stop_worker almel_async_worker
+    async_start_worker almel_async_worker -n
+    async_register_callback almel_async_worker almel::async::callback
+    async_job almel_async_worker almel::async::prompt "$@"
+}
+
+almel::precmd() {
+    local exit_status="${ALMEL_STATUS:-$?}"
+    local jobs="$#jobstates"
     local end="$EPOCHREALTIME"
-    local dur="$(($end - ${ALMEL_START:-$end}))"
-    PROMPT="$(almel prompt zsh -s"$s" -j"$j" -d"$dur")"
+    local duration="$(($end - ${ALMEL_START:-$end}))"
+    if (( ${+ASYNC_VERSION} )); then
+        PROMPT="$(almel prompt zsh --exit-status="$exit_status" --num-jobs="$jobs" --duration="$duration" --no-git)"
+        almel::async "$exit_status" "$jobs" "$duration"
+    else
+        PROMPT="$(almel prompt zsh --exit-status="$exit_status" --num-jobs="$jobs" --duration="$duration")"
+    fi
     unset ALMEL_START
 }
 
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd almel_precmd
-add-zsh-hook preexec almel_preexec
+add-zsh-hook precmd almel::precmd
+add-zsh-hook preexec almel::preexec
 
 ### key bindings ###
 clear-screen-and-update-prompt() {
     ALMEL_STATUS=0
-    almel_precmd
+    almel::precmd
     zle .clear-screen
 }
 zle -N clear-screen clear-screen-and-update-prompt
 
 widget::history() {
-    local selected="$(history -nr 1 | fzf --exit-0 --query "$LBUFFER" | sed 's/\\n/\n/g')"
+    local selected="$(history -inr 1 | fzf --exit-0 --query "$LBUFFER" | cut -d' ' -f4- | sed 's/\\n/\n/g')"
     if [ -n "$selected" ]; then
         BUFFER="$selected"
         CURSOR=$#BUFFER
