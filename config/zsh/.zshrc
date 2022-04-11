@@ -41,6 +41,7 @@ setopt INTERACTIVE_COMMENTS
 setopt NO_SHARE_HISTORY
 setopt MAGIC_EQUAL_SUBST
 setopt PRINT_EIGHT_BIT
+setopt NO_FLOW_CONTROL
 
 zshaddhistory() {
     local line="${1%%$'\n'}"
@@ -179,6 +180,7 @@ bindkey "^[g"       widget::ghq::dir                # Alt-g
 bindkey "^A"        beginning-of-line               # C-a
 bindkey "^E"        end-of-line                     # C-e
 bindkey "^K"        kill-line                       # C-k
+bindkey "^Q"        push-line-or-edit               # C-q
 bindkey "^W"        vi-backward-kill-word           # C-w
 bindkey "^X^W"      forward-kill-word               # C-x C-w
 bindkey "^?"        backward-delete-char            # backspace
