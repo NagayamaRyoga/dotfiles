@@ -44,7 +44,6 @@
     path = conf.d/alias.conf
     path = conf.d/user.conf
     path = conf.d/delta.conf
-    path = conf.d/flow.conf
     path = conf.d/forgit.conf
     path = conf.d/ghq.conf
     path = conf.d/gist.conf

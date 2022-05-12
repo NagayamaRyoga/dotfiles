@@ -15,7 +15,6 @@ apt-get install -y \
     direnv \
     fzf \
     git \
-    git-flow \
     git-lfs \
     gpg \
     jq \
