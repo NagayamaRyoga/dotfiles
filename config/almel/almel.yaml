@@ -53,6 +53,11 @@ directory:
   shrink:
     enabled: true
     max_len: 1
+  aliases:
+    - path: ~/repos/github.com
+      alias: "\uf408 " # nf-fa-github
+    - path: ~/repos
+      alias: "\uf7a1" # nf-mdi-git
 
 git_repo:
   icons:
