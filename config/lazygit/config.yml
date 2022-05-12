@@ -1,29 +1,34 @@
 disableStartupPopups: true
 quitOnTopLevelReturn: true
-notARepository: 'skip'
+promptToReturnFromSubprocess: false
+notARepository: skip
 
 git:
   autoFetch: false
   disableForcePushing: true
+  parseEmoji: true
   paging:
     colorArg: always
     pager: delta --paging=never
-  parseEmoji: true
+  log:
+    showGraph: always
 
 gui:
   showRandomTip: false
+  showIcons: true
 
 os:
-  openCommand: "code --goto -- {{filename}}"
-  editCommandTemplate: "{{editor}} +{{line}} -- {{filename}}"
+  openCommand: 'code --goto -- {{filename}}:{{line}}'
+  editCommand: 'nvim'
+  editCommandTemplate: '{{editor}} +{{line}} -- {{filename}}'
 
 keybinding:
   commits:
-    viewResetOptions: 'G'
+    viewResetOptions: G
 
 customCommands:
-  - key: "C"
-    command: "git cz"
-    context: "files"
-    loadingText: "opening commitizen commit tool"
+  - key: C
+    command: git cz
+    context: files
+    loadingText: opening commitizen commit tool
     subprocess: true
