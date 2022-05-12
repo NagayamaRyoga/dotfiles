@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 query="${1:-.}"
 
-file="$(\command mktemp)"
-\command cat >"$file"
-result="$(\command fzf --print-query --query="$query" --preview="\command yq eval {q} ${(q)file} | \command bat --color=always --plain --language=yaml" --preview-window='down,99%')"
-\command yq eval "$result" "$file"
-\command rm "$file"
+file="$(mktemp)"
+cat >"$file"
+result="$(fzf --print-query --query="$query" --preview="yq eval {q} ${(q)file} | bat --color=always --plain --language=yaml" --preview-window='down,99%')"
+yq eval "$result" "$file"
+rm "$file"

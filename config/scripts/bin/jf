@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 query="${1:-.}"
 
-file="$(\command mktemp)"
-\command cat >"$file"
-result="$(\command fzf --print-query --query="$query" --preview="\command jq {q} ${(q)file} | \command bat --color=always --plain --language=json" --preview-window='down,99%')"
-\command jq "$result" "$file"
-\command rm "$file"
+file="$(mktemp)"
+cat >"$file"
+result="$(fzf --print-query --query="$query" --preview="jq {q} ${(q)file} | bat --color=always --plain --language=json" --preview-window='down,99%')"
+jq "$result" "$file"
+rm "$file"

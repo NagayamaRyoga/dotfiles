@@ -6,5 +6,5 @@ if git rev-parse HEAD &>/dev/null; then
     exit 1
 fi
 
-git commit -m "Initial commit" --allow-empty
+git commit -m "initial commit" --allow-empty
 exit "$?"

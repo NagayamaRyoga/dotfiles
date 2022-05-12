@@ -11,8 +11,11 @@ reset_color="\e[0m"
 
 git rev-parse || exit 1
 
-default_branch="$(git config init.defaultBranch)"
-if ! git rev-parse --verify -q "$default_branch" >/dev/null; then
+if git rev-parse --verify -q "develop" >/dev/null; then
+    default_branch="develop"
+elif git rev-parse --verify -q "main" >/dev/null; then
+    default_branch="main"
+else
     default_branch="master"
 fi
 
