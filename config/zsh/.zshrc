@@ -2,11 +2,21 @@
 typeset -gAH ZINIT
 ZINIT[HOME_DIR]="$XDG_DATA_HOME/zinit"
 ZINIT[ZCOMPDUMP_PATH]="$XDG_STATE_HOME/zcompdump"
+ZINIT[NO_ALIASES]=1
 source "${ZINIT[HOME_DIR]}/bin/zinit.zsh"
 
 ### paths ###
-typeset -U path
-typeset -U fpath
+typeset -gU PATH path
+typeset -gU FPATH fpath
+
+path=(
+    '/usr/local/bin'(N-/)
+    '/usr/bin'(N-/)
+    '/bin'(N-/)
+    '/usr/local/sbin'(N-/)
+    '/usr/sbin'(N-/)
+    '/sbin'(N-/)
+)
 
 path=(
     "$HOME/.local/bin"(N-/)
@@ -43,9 +53,19 @@ setopt MAGIC_EQUAL_SUBST
 setopt PRINT_EIGHT_BIT
 setopt NO_FLOW_CONTROL
 
+### hooks ###
 zshaddhistory() {
     local line="${1%%$'\n'}"
     [[ ! "$line" =~ "^(cd|history|jj?|lazygit|la|ll|ls|rm|rmdir|trash)($| )" ]]
+}
+
+chpwd() {
+    printf "\e[34m%s\e[m:\n" "${PWD/$HOME/~}"
+    if (( ${+commands[exa]} )); then
+        exa --group-directories-first --icons -a
+    else
+        ls -a
+    fi
 }
 
 ### theme ###
@@ -55,13 +75,6 @@ zinit light-mode from'gh-r' as'program' for \
     @'NagayamaRyoga/jargon'
 
 ### key bindings ###
-clear-screen-and-update-prompt() {
-    ALMEL_STATUS=0
-    almel::precmd
-    zle .clear-screen
-}
-zle -N clear-screen clear-screen-and-update-prompt
-
 widget::history() {
     local selected="$(history -inr 1 | fzf --exit-0 --query "$LBUFFER" | cut -d' ' -f4- | sed 's/\\n/\n/g')"
     if [ -n "$selected" ]; then
@@ -72,7 +85,7 @@ widget::history() {
 }
 
 widget::ghq::source() {
-    local session color icon green="\e[32m" blue="\e[34m" reset="\e[m" checked="\uf631" unchecked="\uf630"
+    local session color icon green="\e[32m" blue="\e[34m" reset="\e[m" checked="󰄲" unchecked="󰄱"
     local sessions=($(tmux list-sessions -F "#S" 2>/dev/null))
 
     ghq list | sort | while read -r repo; do
@@ -123,11 +136,6 @@ widget::ghq::session() {
     zle -R -c # refresh screen
 }
 
-forward-kill-word() {
-    zle vi-forward-word
-    zle vi-backward-kill-word
-}
-
 zle -N widget::history
 zle -N widget::ghq::dir
 zle -N widget::ghq::session
@@ -142,7 +150,6 @@ bindkey "^E"        end-of-line                     # C-e
 bindkey "^K"        kill-line                       # C-k
 bindkey "^Q"        push-line-or-edit               # C-q
 bindkey "^W"        vi-backward-kill-word           # C-w
-bindkey "^X^W"      forward-kill-word               # C-x C-w
 bindkey "^?"        backward-delete-char            # backspace
 bindkey "^[[3~"     delete-char                     # delete
 bindkey "^[[1;3D"   backward-word                   # Alt + arrow-left

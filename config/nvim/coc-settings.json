@@ -1,0 +1,6 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": [
+    "c",
+    "cpp"
+  ]
+}

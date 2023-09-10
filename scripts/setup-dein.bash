@@ -3,9 +3,12 @@ set -x
 # shellcheck source=./scripts/common.bash
 source "$(dirname "$0")/common.bash"
 
-if [ -d "$XDG_DATA_HOME/dein/repos/github.com/Shougo/dein.vim" ]; then
+readonly repo="github.com/Shougo/dein.vim"
+readonly install_dir="$XDG_DATA_HOME/dein/repos/$repo"
+
+if [ -d "$install_dir" ]; then
     echo "dein.vim is already installed."
-    git -C "$XDG_DATA_HOME/dein/repos/github.com/Shougo/dein.vim" pull
+    git -C "$install_dir" pull
 
     echo "Updating dein.vim plugins..."
     nvim \
@@ -14,7 +17,7 @@ if [ -d "$XDG_DATA_HOME/dein/repos/github.com/Shougo/dein.vim" ]; then
         -c ":q"
 else
     echo "Installing dein.vim..."
-    curl "https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh" | sh -s "$XDG_DATA_HOME/dein"
+    git clone "https://$repo" "$install_dir"
 
     echo "Installing dein.vim plugins..."
     nvim \

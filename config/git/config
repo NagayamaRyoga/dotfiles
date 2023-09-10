@@ -1,46 +1,5 @@
-[core]
-    autocrlf = false
-    ignoreCase = false
-
-[init]
-    defaultBranch = main
-    templateDir = ~/.config/git/template
-
-[status]
-    showUntrackedFiles = all
-
-[commit]
-    verbose = true
-    gpgSign = false # overwritten in conf.d/local.conf
-    template = .git/commit-template.txt
-
-[diff]
-    algorithm = histogram
-
-[tag]
-    forceSignAnnotated = false # overwritten in conf.d/local.conf
-
-[merge]
-    ff = false
-    conflictStyle = diff3
-
-[fetch]
-    prune = true
-
-[pull]
-    ff = only
-
-[push]
-    default = simple
-    followTags = true
-
-[advice]
-    addEmptyPathspec = false
-
-[gpg]
-    program = gpg
-
 [include]
+    path = conf.d/core.conf
     path = conf.d/alias.conf
     path = conf.d/user.conf
     path = conf.d/delta.conf

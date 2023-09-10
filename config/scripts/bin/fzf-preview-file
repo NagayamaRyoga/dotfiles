@@ -2,11 +2,20 @@
 if [ "$#" -ne 1 ]; then
     echo "$0 <file>"
     return 1
-elif [ ! -e "$1" ]; then
+fi
+if [ ! -e "$1" ]; then
     echo "$1 does not exist"
     return 1
-elif [ -d "$1" ]; then
-    fzf-preview-directory "$1"
+fi
+
+if [ -d "$1" ]; then
+    if (( ${+commands[exa]} )); then
+        exa -T -L3 -a --git-ignore --ignore-glob=".git" --icons --color=always "$@"
+    elif (( ${+commands[tree]} )); then
+        tree -L3 "$@"
+    else
+        ls "$@"
+    fi
 elif [[ "$(file --mime -- "$1")" =~ "binary" ]]; then
     hexyl --length=8KiB -- "$1"
 elif (( ${+commands[bat]} )); then

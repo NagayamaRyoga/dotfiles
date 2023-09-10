@@ -10,6 +10,11 @@ touch "$HOME/.hushlogin"
 # GPG
 ln -sfv "$REPO_DIR/config/gnupg/gpg-agent.conf.mac" "$HOME/.gnupg/gpg-agent.conf"
 
+# Sublime Text
+SUBL_DIR="$HOME/Library/Application Support/Sublime Text"
+mkdir -p "$SUBL_DIR"
+ln -sfv "$XDG_CONFIG_HOME/sublime-text/Packages" "$SUBL_DIR"
+
 # Finder
 defaults write com.apple.finder AppleShowAllFiles -bool true
 defaults write com.apple.finder ShowPathbar -bool true

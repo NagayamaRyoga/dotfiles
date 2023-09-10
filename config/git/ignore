@@ -12,12 +12,17 @@
 ### Vim ###
 .*.swp
 
-### VS Code ###
+### Editor ###
 .vscode/*
+.idea/
 
 ### C/C++ ###
 compile_commands.json
 compile_flags.txt
+
+### Go ###
+go.work
+go.work.sum
 
 ### Node.js ###
 node_modules/

@@ -1,2 +1,2 @@
 #!/usr/bin/env zsh
-command echo "${(F)commands}" | fzf --preview="man \"\$(basename {})\"" --preview-window="right:50%"
+fzf --preview="man \"\$(basename {})\"" --preview-window="right:50%" <<<"${(F)commands}"

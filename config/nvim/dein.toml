@@ -25,8 +25,23 @@ hook_add = '''
 colorscheme codedark
 '''
 
+### coc.nvim ###
 [[plugins]]
-repo = 'romgrk/doom-one.vim'
+repo = 'neoclide/coc.nvim'
+rev = 'release'
+merged = '0'
+build = 'coc#util#install()'
+hook_add = '''
+source $XDG_CONFIG_HOME/nvim/coc.vim
+'''
+
+[[plugins]]
+repo = 'neoclide/coc-pairs'
+depends = ['coc.nvim']
+
+[[plugins]]
+repo = 'clangd/coc-clangd'
+depends = ['coc.nvim']
 
 ### vim-gitgutter ###
 [[plugins]]
@@ -66,7 +81,7 @@ function! s:defx_my_settings() abort
 endfunction
 
 call defx#custom#option('_', {
-\   'columns': 'space:indent:git:icons:filename:type',
+\   'columns': 'space:indent:git:icons:space:filename:type',
 \   'direction': 'topleft',
 \   'split': 'vertical',
 \   'winwidth': 32,
@@ -83,10 +98,6 @@ depends = ['defx.nvim']
 repo = 'kristijanhusak/defx-icons'
 depends = ['defx.nvim']
 
-### lexima.vim ###
-[[plugins]]
-repo = 'cohama/lexima.vim'
-
 ### vim-surround ###
 [[plugins]]
 repo = 'tpope/vim-surround'
@@ -95,7 +106,7 @@ repo = 'tpope/vim-surround'
 [[plugins]]
 repo = 'elzr/vim-json'
 hook_add = '''
-set conceallevel=2
+"set conceallevel=2
 set concealcursor=niv
 let g:vim_json_syntax_conceal = 0
 '''
@@ -118,42 +129,15 @@ repo = 'junegunn/fzf'
 build = 'bash install --bin'
 
 [[plugins]]
-repo = 'junegunn/fzf.vim'
-
-[[plugins]]
 repo = 'yuki-ycino/fzf-preview.vim'
 rev = 'release/rpc'
 hook_add = '''
 nnoremap <silent>//     <cmd>FzfPreviewLinesRpc<CR>
 nnoremap <silent><C-f>  <cmd>FzfPreviewBufferLinesRpc<CR>
 nnoremap <silent><C-p>  <cmd>FzfPreviewProjectFilesRpc<CR>
-
-"nnoremap <silent>//     :BLines<CR>
-"nnoremap <silent><C-f>  :Lines<CR>
-"nnoremap <silent><C-p>  :Files<CR>
 '''
 
-### completion-nvim ###
-[[plugins]]
-repo = 'nvim-lua/completion-nvim'
-
-### nvim-lspconfig ###
-[[plugins]]
-repo = 'neovim/nvim-lspconfig'
-depends = ['completion-nvim']
-hook_add = '''
-set completeopt=menuone,noinsert
-set shortmess+=c
-let g:completion_enable_auto_popup = 1
-
-" C/C++
-lua require'lspconfig'.clangd.setup{}
-
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> <C-f> <cmd>lua vim.lsp.buf.formatting()<CR>
-'''
-
+### vim-expand-region ###
 [[plugins]]
 repo = 'terryma/vim-expand-region'
 hook_add = '''
@@ -161,52 +145,15 @@ vmap v <Plug>(expand_region_expand)
 vmap V <Plug>(expand_region_shrink)
 '''
 
-### asynchronous lint engine ###
-[[plugins]]
-repo = 'dense-analysis/ale'
-hook_add = '''
-let g:ale_fix_on_save = 1
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines'],
-\   'c': ['clang-format'],
-\   'cpp': ['clang-format'],
-\ }
-'''
-
-### nvim-treesitter ###
-# [[plugins]]
-# repo = 'nvim-treesitter/nvim-treesitter'
-# merged = 1
-# # hook_post_update = 'TSUpdate'
-# hook_add = '''
-# lua <<EOF
-# require'nvim-treesitter.configs'.setup {
-#     ensure_installed = {
-#         'bash',
-#         'c',
-#         'cpp',
-#         'css',
-#         'go',
-#         'html',
-#         'javascript',
-#         'json',
-#         'python',
-#         'ruby',
-#         'rust',
-#         'toml',
-#         'typescript',
-#     },
-#     highlight = {
-#         enable = true,
-#         disable = {},
-#     },
-# }
-# EOF
-# '''
-
 ### barbar.nvim ###
 [[plugins]]
 repo = 'kyazdani42/nvim-web-devicons'
+hook_add = '''
+highlight BufferCurrentSign guifg=#5faefe
+highlight BufferVisibleSign guifg=#7be4a4
+highlight BufferInactive    guifg=#808080 guibg=#262626
+highlight BufferTabpageFill guifg=#444444 guibg=#303030
+'''
 
 [[plugins]]
 repo = 'romgrk/barbar.nvim'
@@ -214,12 +161,14 @@ repo = 'romgrk/barbar.nvim'
 ### nvim-scrollview ###
 [[plugins]]
 repo = 'dstein64/nvim-scrollview'
-hook_add = '''
-" https://github.com/dstein64/nvim-scrollview/issues/10
-command Bdelete silent! ScrollViewDisable | bdelete | silent! ScrollViewEnable
-nnoremap <silent><C-w> <cmd>Bdelete<CR>
-'''
 
 ### vim-highlightedyank ###
 [[plugins]]
 repo = 'machakann/vim-highlightedyank'
+
+### toggleterm.nvim ###
+[[plugins]]
+repo = 'akinsho/toggleterm.nvim'
+hook_add = '''
+lua require("toggleterm").setup()
+'''
