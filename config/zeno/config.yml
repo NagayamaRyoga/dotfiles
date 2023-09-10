@@ -299,6 +299,55 @@ snippets:
     context:
       lbuffer: ^go\s+\S+$
 
+  # npm
+  - name: npm i
+    keyword: i
+    snippet: install
+    context:
+      lbuffer: ^(npm|pnpm)\s
+
+  - name: npm -D
+    keyword: -D
+    snippet: --save-dev
+    context:
+      lbuffer: ^(npm|pnpm)\s+install\s
+
+  - name: npm r
+    keyword: r
+    snippet: run
+    context:
+      lbuffer: ^(npm|pnpm)\s+\S+$
+
+  - name: npm b
+    keyword: b
+    snippet: run build
+    context:
+      lbuffer: ^(npm|pnpm)\s+\S+$
+
+  - name: npm d
+    keyword: d
+    snippet: run dev
+    context:
+      lbuffer: ^(npm|pnpm)\s+\S+$
+
+  - name: npm f
+    keyword: f
+    snippet: run fmt
+    context:
+      lbuffer: ^(npm|pnpm)\s+\S+$
+
+  - name: npm s
+    keyword: s
+    snippet: start
+    context:
+      lbuffer: ^(npm|pnpm)\s
+
+  - name: npm t
+    keyword: t
+    snippet: test
+    context:
+      lbuffer: ^(npm|pnpm)\s
+
   # terraform
   - name: tf
     keyword: tf
