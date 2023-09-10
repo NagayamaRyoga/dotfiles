@@ -18,29 +18,18 @@ case "$OSTYPE" in
             alias p='xsel -b'
         fi
     ;;
-    msys)
-        alias cmake='command cmake -G"Unix Makefiles"'
-        alias pp='cat >/dev/clipboard'
-        alias p='cat /dev/clipboard'
-    ;;
     darwin*)
+        path=(
+            /usr/local/opt/coreutils/libexec/gnubin(N-/)
+            /usr/local/opt/findutils/libexec/gnubin(N-/)
+            /usr/local/opt/gnu-sed/libexec/gnubin(N-/)
+            /usr/local/opt/grep/libexec/gnubin(N-/)
+            /usr/local/opt/make/libexec/gnubin(N-/)
+            "$path[@]"
+        )
         alias pp='pbcopy'
         alias p='pbpaste'
         alias chrome='open -a "Google Chrome"'
-        (( ${+commands[gdate]} )) && alias date='gdate'
-        (( ${+commands[gls]} )) && alias ls='gls --color=auto'
-        (( ${+commands[gmkdir]} )) && alias mkdir='gmkdir'
-        (( ${+commands[gcp]} )) && alias cp='gcp -i'
-        (( ${+commands[gmv]} )) && alias mv='gmv -i'
-        (( ${+commands[grm]} )) && alias rm='grm -i'
-        (( ${+commands[gdu]} )) && alias du='gdu'
-        (( ${+commands[ghead]} )) && alias head='ghead'
-        (( ${+commands[gtail]} )) && alias tail='gtail'
-        (( ${+commands[gsed]} )) && alias sed='gsed'
-        (( ${+commands[ggrep]} )) && alias grep='ggrep'
-        (( ${+commands[gfind]} )) && alias find='gfind'
-        (( ${+commands[gdirname]} )) && alias dirname='gdirname'
-        (( ${+commands[gxargs]} )) && alias xargs='gxargs'
     ;;
 esac
 
@@ -51,11 +40,8 @@ mkcd() { command mkdir -p -- "$@" && builtin cd "${@[-1]:a}" }
 j() {
     local root dir
     root="${$(git rev-parse --show-cdup 2>/dev/null):-.}"
-    dir="$(fd --color=always --hidden --type=d . "$root" | fzf --select-1 --query="$*" --preview='fzf-preview-directory {}')"
-    if [ -n "$dir" ]; then
-        builtin cd "$dir"
-        echo "$PWD"
-    fi
+    dir="$(fd --color=always --hidden --type=d . "$root" | fzf --select-1 --query="$*" --preview='fzf-preview-file {}')"
+    [[ -n "$dir" ]] && builtin cd "$dir"
 }
 
 jj() {
@@ -64,12 +50,35 @@ jj() {
     builtin cd "$root"
 }
 
+pathed() {
+    PATH="$(tr ':' '\n' <<<"$PATH" | ped | tr '\n' ':' | sed -E 's/:(:|$)//g')"
+}
+
+re() {
+    [[ $# -eq 0 ]] && return 1
+    local selected="$(rg --color=always --line-number "$@" | fzf -d ':' --preview='
+        local file={1} line={2} n=10
+        local start="$(( line > n ? line - n : 1 ))"
+        bat --color=always --highlight-line="$line" --line-range="$start:" "$file"
+    ')"
+    [[ -z "$selected" ]] && return
+    local file="$(cut -d ':' -f 1 <<<"$selected")" line="$(cut -d ':' -f 2 <<<"$selected")"
+    "$EDITOR" +"$line" "$file"
+}
+
 ### diff ###
-diff() { command diff "$@" | bat --paging=never --plain --language=diff }
+diff() {
+    command diff "$@" | bat --paging=never --plain --language=diff
+    return "${pipestatus[1]}"
+}
 alias diffall='diff --new-line-format="+%L" --old-line-format="-%L" --unchanged-line-format=" %L"'
 
 ### direnv ###
-(( ${+commands[direnv]} )) && eval "$(direnv hook zsh)"
+zinit wait lucid blockf light-mode as'program' from'gh-r' for \
+    mv'direnv* -> direnv' \
+    atclone'./direnv hook zsh >direnv.zsh; zcompile direnv.zsh' atpull'%atclone' \
+    src'direnv.zsh' \
+    @'direnv/direnv'
 
 ### FZF ###
 export FZF_DEFAULT_OPTS='--reverse --border --ansi --bind="ctrl-d:print-query,ctrl-p:replace-query"'
@@ -101,7 +110,6 @@ zinit wait'1' lucid light-mode for \
 
 ### zsh plugins ###
 zinit wait lucid blockf light-mode for \
-    atload'async_init' @'mafredri/zsh-async' \
     @'zsh-users/zsh-autosuggestions' \
     @'zsh-users/zsh-completions' \
     @'zdharma-continuum/fast-syntax-highlighting'
@@ -110,16 +118,18 @@ zinit wait lucid blockf light-mode for \
 zinit wait lucid light-mode as'program' from'gh-r' for \
     pick'delta*/delta'  @'dandavison/delta' \
     pick'mmv*/mmv'      @'itchyny/mmv' \
-    pick'ripgrep*/rg'   @'BurntSushi/ripgrep'
+    pick'ripgrep*/rg'   @'BurntSushi/ripgrep' \
+    pick'ghq*/ghq'      @'x-motemen/ghq' \
+    if'! (( ${+commands[lazygit]} ))' @'jesseduffield/lazygit'
 
 ### asdf-vm ###
-__asdf_atload() {
+__asdf_atinit() {
     export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
     export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
 }
 zinit wait lucid light-mode for \
     atpull'asdf plugin update --all' \
-    atload'__asdf_atload' \
+    atinit'__asdf_atinit' \
     @'asdf-vm/asdf'
 
 ### GitHub CLI ###
@@ -133,7 +143,7 @@ __exa_atload() {
     alias ls='exa --group-directories-first'
     alias la='exa --group-directories-first -a'
     alias ll='exa --group-directories-first -al --header --color-scale --git --icons --time-style=long-iso'
-    alias tree='exa --group-directories-first -T --icons'
+    alias tree='exa --group-directories-first --tree --icons'
 }
 zinit wait lucid light-mode as'program' from'gh-r' for \
     pick'bin/exa' \
@@ -153,6 +163,7 @@ __hgrep_atload() {
 }
 zinit wait lucid light-mode as'program' from'gh-r' for \
     pick'hgrep*/hgrep' \
+    atclone'./hgrep*/hgrep --generate-completion-script zsh >_hgrep' atpull'%atclone' \
     atload'__hgrep_atload' \
     @'rhysd/hgrep'
 
@@ -182,6 +193,8 @@ __zeno_atload() {
     bindkey ' '  zeno-auto-snippet
     bindkey '^M' zeno-auto-snippet-and-accept-line
     bindkey '^P' zeno-completion
+    bindkey '^X '  zeno-insert-space
+    bindkey '^X^M' accept-line
 }
 
 zinit wait lucid light-mode for \
@@ -194,12 +207,12 @@ zinit wait lucid light-mode as'program' for \
     @'mrowa44/emojify'
 
 ### Forgit ###
-__forgit_atload() {
+__forgit_atinit() {
     export FORGIT_INSTALL_DIR="$PWD"
     export FORGIT_NO_ALIASES=1
 }
 zinit wait lucid light-mode as'program' for \
-    atload'__forgit_atload' \
+    atload'__forgit_atinit' \
     pick'bin/git-forgit' \
     @'wfxr/forgit'
 
@@ -225,14 +238,13 @@ zinit wait lucid light-mode for \
 __tealdeer_atclone() {
     curl -sSL 'https://raw.githubusercontent.com/dbrgn/tealdeer/main/completion/zsh_tealdeer' -o _tealdeer
 }
-__tealdeer_atload() {
+__tealdeer_atinit() {
     export TEALDEER_CONFIG_DIR="$XDG_CONFIG_HOME/tealdeer"
-    export TEALDEER_CACHE_DIR="$XDG_CACHE_HOME/tealdeer"
 }
 zinit wait lucid light-mode as'program' from'gh-r' for \
     mv'tealdeer* -> tldr' \
     atclone'__tealdeer_atclone' atpull'%atclone' \
-    atload'__tealdeer_atload' \
+    atinit'__tealdeer_atinit' \
     @'dbrgn/tealdeer'
 
 ### chpwd-recent-dirs ###
@@ -250,7 +262,7 @@ zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 ### GPG ###
-export GPG_TTY="$(tty)"
+export GPG_TTY="$TTY"
 
 ### wget ###
 alias wget='wget --hsts-file="$XDG_STATE_HOME/wget-hsts"'
@@ -286,6 +298,7 @@ docker-rm() {
         command docker rm "$@"
     fi
 }
+
 docker-rmi() {
     if [ "$#" -eq 0 ]; then
         command docker images | fzf --exit-0 --multi --header-lines=1 | awk '{ print $3 }' | xargs -r docker rmi --
@@ -345,12 +358,10 @@ export MYSQL_HISTFILE="$XDG_STATE_HOME/mysql_history"
 export PSQL_HISTORY="$XDG_STATE_HOME/psql_history"
 
 ### local ###
-if [ -f "$ZDOTDIR/.zshrc.local" ]; then
-    source "$ZDOTDIR/.zshrc.local"
+if [ -f "$ZDOTDIR/local.zsh" ]; then
+    source "$ZDOTDIR/local.zsh"
 fi
 
 ### autoloads ###
-autoload -Uz cdr
-autoload -Uz chpwd_recent_dirs
 autoload -Uz _zinit
-zpcompinit
+zicompinit
