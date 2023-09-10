@@ -2,14 +2,8 @@
 alias la='ls -a'
 alias ll='ls -al'
 
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-
 case "$OSTYPE" in
     linux*)
-        (( ${+commands[wslview]} )) && alias open='wslview'
-
         if (( ${+commands[win32yank.exe]} )); then
             alias pp='win32yank.exe -i'
             alias p='win32yank.exe -o'
@@ -32,8 +26,6 @@ case "$OSTYPE" in
         alias chrome='open -a "Google Chrome"'
     ;;
 esac
-
-(( ${+commands[trash]} )) && alias rm='trash'
 
 mkcd() { command mkdir -p -- "$@" && builtin cd "${@[-1]:a}" }
 
@@ -88,7 +80,6 @@ export FZF_DEFAULT_COMMAND='fd --hidden --color=always'
 export MANPAGER="sh -c 'col -bx | bat --color=always --language=man --plain'"
 
 alias cat='bat --paging=never'
-alias batman='bat --language=man --plain'
 
 ### ripgrep ###
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
@@ -267,9 +258,6 @@ export GPG_TTY="$TTY"
 ### wget ###
 alias wget='wget --hsts-file="$XDG_STATE_HOME/wget-hsts"'
 
-### Make ###
-alias make='make -j$(($(nproc)+1))'
-
 ### CMake ###
 alias cmaked='cmake -DCMAKE_BUILD_TYPE=Debug -B "$(git rev-parse --show-toplevel)/build"'
 alias cmakerel='cmake -DCMAKE_BUILD_TYPE=Release -B "$(git rev-parse --show-toplevel)/build"'
@@ -285,12 +273,6 @@ docker() {
     fi
 }
 
-docker-clean() {
-    command docker ps -aqf status=exited | xargs -r docker rm --
-}
-docker-cleani() {
-    command docker images -qf dangling=true | xargs -r docker rmi --
-}
 docker-rm() {
     if [ "$#" -eq 0 ]; then
         command docker ps -a | fzf --exit-0 --multi --header-lines=1 | awk '{ print $1 }' | xargs -r docker rm --
@@ -341,8 +323,6 @@ export NPM_CONFIG_USERCONFIG="$NPM_CONFIG_DIR/npmrc"
 export IRBRC="$XDG_CONFIG_HOME/irb/irbrc"
 
 ### Python ###
-alias python="python3"
-alias pip="pip3"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/startup.py"
 
 ### pylint ###

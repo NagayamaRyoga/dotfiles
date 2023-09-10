@@ -224,8 +224,8 @@ snippets:
     snippet: lazygit
 
   # docker
-  - name: dok
-    keyword: dok
+  - name: d
+    keyword: d
     snippet: docker
 
   # docker compose
@@ -260,6 +260,44 @@ snippets:
     snippet: run --rm -it
     context:
       lbuffer: ^docker\s
+
+  # docker clean
+  - name: docker clean
+    keyword: clean
+    snippet: container prune -f
+    context:
+      lbuffer: ^docker\s
+
+  - name: docker cleani
+    keyword: cleani
+    snippet: image prune -f
+    context:
+      lbuffer: ^docker\s
+
+  # go
+  - name: go build -v
+    keyword: b
+    snippet: build -v
+    context:
+      lbuffer: ^go\s+\S+$
+
+  - name: go generate -v
+    keyword: g
+    snippet: generate -v ./...
+    context:
+      lbuffer: ^go\s+\S+$
+
+  - name: go run -v .
+    keyword: r
+    snippet: run -v .{}
+    context:
+      lbuffer: ^go\s+\S+$
+
+  - name: go test ./...
+    keyword: t
+    snippet: test ./...
+    context:
+      lbuffer: ^go\s+\S+$
 
   # terraform
   - name: tf
@@ -328,12 +366,43 @@ snippets:
     evaluate: true
     global: true
 
+  # make
+  - name: make
+    keyword: make
+    snippet: make -j
+
+  # bat
+  - name: batman
+    keyword: batman
+    snippet: bat -p -lman
+
   # coreutils
   - name: tailf
     keyword: tailf
     snippet: tail -f
 
-  # --version
+  - name: cp
+    keyword: cp
+    snippet: cp -ir
+
+  - name: rm
+    keyword: rm
+    snippet: zsh -c "(( ${+commands[trash]} )) && <<<'trash' || <<<'rm -i'"
+    evaluate: true
+
+  - name: mv
+    keyword: mv
+    snippet: mv -i
+
+  # python
+  - name: python
+    keyword: python
+    snippet: python3
+
+  - name: pip
+    keyword: pip
+    snippet: pip3
+
   - name: python -v
     keyword: -v
     snippet: -V
@@ -341,12 +410,23 @@ snippets:
     context:
       lbuffer: ^(python3?|pip3?)\s
 
+  # java
   - name: java -v
     keyword: -v
     snippet: -version
     global: true
     context:
       lbuffer: ^java\s
+
+  # open
+  - name: chrome
+    keyword: chrome
+    snippet: open -a "Google Chrome"
+
+  - name: open
+    keyword: open
+    snippet: zsh -c "(( ${+commands[wslview]} )) && <<<'wslview' || <<<'open'"
+    evaluate: true
 
 .default-options: &default-options
   --exit-0: true
