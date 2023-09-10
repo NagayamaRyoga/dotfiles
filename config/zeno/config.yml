@@ -300,6 +300,16 @@ snippets:
       lbuffer: ^go\s+\S+$
 
   # npm
+  - name: n
+    keyword: n
+    snippet: zsh -c "$ZENO_HOME/bin/package-manager.ts"
+    evaluate: true
+
+  - name: npm
+    keyword: npm
+    snippet: zsh -c "$ZENO_HOME/bin/package-manager.ts"
+    evaluate: true
+
   - name: npm i
     keyword: i
     snippet: install
