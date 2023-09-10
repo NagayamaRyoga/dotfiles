@@ -1,14 +1,14 @@
 #!/usr/bin/env -S deno run --allow-read
 import { dirname } from "https://deno.land/std/path/mod.ts";
 
-const detectPackageManager = async (path: string) => {
+const detectPackageManager = async (cwd: string) => {
   const packageManagers = [
     { name: "npm", lockFile: "package-lock.json" },
     { name: "yarn", lockFile: "yarn.lock" },
     { name: "pnpm", lockFile: "pnpm-lock.yaml" },
   ];
 
-  for (let dir = path;;) {
+  for (let dir = cwd;;) {
     for (const { name, lockFile } of packageManagers) {
       try {
         const info = await Deno.lstat(`${dir}/${lockFile}`);

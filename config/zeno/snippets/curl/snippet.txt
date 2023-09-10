@@ -1,4 +1,4 @@
 -X POST
 -X PUT
 -X DELETE
--H 'Content-Type: application/json'
+-H Content-Type: application/json

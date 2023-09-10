@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 . "${0:a:h}/ansi.zsh"
 
-icon="$(print "\ue71e")"
+icon=""
 header="script"
 
 reset="$ansi[reset]"

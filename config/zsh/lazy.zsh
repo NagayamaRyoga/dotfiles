@@ -174,18 +174,27 @@ zinit wait lucid light-mode as'program' from'gh-r' for \
     @'denisidoro/navi'
 
 ### zeno.zsh ###
-export ZENO_HOME="$XDG_CONFIG_HOME/zeno"
+export ZENO_HOME="$(mktemp -d -t zeno.XXXXXX)"
+export ZENO_CONFIG_HOME="$XDG_CONFIG_HOME/zeno"
+export ZENO_SCRIPT_DIR="$ZENO_CONFIG_HOME/scripts"
 export ZENO_ENABLE_SOCK=1
 # export ZENO_DISABLE_BUILTIN_COMPLETION=1
 export ZENO_GIT_CAT="bat --color=always"
 export ZENO_GIT_TREE="exa --tree"
 
 __zeno_atload() {
+    "$ZENO_SCRIPT_DIR/generate-config.ts"
     bindkey ' '  zeno-auto-snippet
     bindkey '^M' zeno-auto-snippet-and-accept-line
     bindkey '^P' zeno-completion
     bindkey '^X '  zeno-insert-space
     bindkey '^X^M' accept-line
+
+    add-zsh-hook chpwd __zeno_chpwd
+}
+__zeno_chpwd() {
+    "$ZENO_SCRIPT_DIR/generate-config.ts"
+    zeno-restart-server
 }
 
 zinit wait lucid light-mode for \

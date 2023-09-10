@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-icon="\uf8e9"
+icon="󰏪"
 header="alias"
 
 git --no-pager config --get-regexp '^alias\.' |

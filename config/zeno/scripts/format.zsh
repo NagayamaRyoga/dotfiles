@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # format.zsh <icon> <header> <header_color> [main_color] [desc_color] [note_color] [header_width] [main_width]
-icon="$(print "$1")"
+icon="$1"
 header="$2"
 header_color="$3"
 main_color="${4:-bold}"

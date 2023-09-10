@@ -2,7 +2,7 @@
 args=("$@")
 
 max_count=100
-icon="\uf417"
+icon=""
 header="commit"
 
 hash="%h"
