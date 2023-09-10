@@ -176,5 +176,5 @@ zle -N zle-keymap-select
 
 ### plugins ###
 zinit wait lucid null for \
-    atinit'source "$ZDOTDIR/.zshrc.lazy"' \
+    atinit'source "$ZDOTDIR/lazy.zsh"' \
     @'zdharma-continuum/null'
