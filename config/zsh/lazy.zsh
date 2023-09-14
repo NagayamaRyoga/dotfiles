@@ -183,7 +183,7 @@ export ZENO_GIT_CAT="bat --color=always"
 export ZENO_GIT_TREE="exa --tree"
 
 __zeno_atload() {
-    "$ZENO_SCRIPT_DIR/generate-config.ts"
+    "$ZENO_CONFIG_HOME/config.ts"
     bindkey ' '  zeno-auto-snippet
     bindkey '^M' zeno-auto-snippet-and-accept-line
     bindkey '^P' zeno-completion
@@ -193,7 +193,7 @@ __zeno_atload() {
     add-zsh-hook chpwd __zeno_chpwd
 }
 __zeno_chpwd() {
-    "$ZENO_SCRIPT_DIR/generate-config.ts"
+    "$ZENO_CONFIG_HOME/config.ts"
     zeno-restart-server
 }
 

@@ -308,6 +308,16 @@ const gitSnippets: ReadonlyArray<Snippet> = [
     },
   },
   {
+    name: "git M",
+    keyword: "M",
+    snippet:
+      'zsh -c "git show-ref --verify --quiet refs/heads/main && <<<main || <<<master"',
+    evaluate: true,
+    context: {
+      lbuffer: "^git\\s",
+    },
+  },
+  {
     name: "git OB",
     keyword: "OB",
     snippet: 'zsh -c "echo origin/$(git symbolic-ref --short HEAD)"',
