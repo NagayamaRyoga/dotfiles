@@ -129,18 +129,18 @@ zinit wait lucid light-mode as'program' from'gh-r' for \
     atclone'./gh*/bin/gh completion -s zsh >_gh' atpull'%atclone' \
     @'cli/cli'
 
-### exa ###
-__exa_atload() {
-    alias ls='exa --group-directories-first'
-    alias la='exa --group-directories-first -a'
-    alias ll='exa --group-directories-first -al --header --color-scale --git --icons --time-style=long-iso'
-    alias tree='exa --group-directories-first --tree --icons'
+### eza ###
+__eza_atload() {
+    alias ls='eza --group-directories-first'
+    alias la='eza --group-directories-first -a'
+    alias ll='eza --group-directories-first -al --header --color-scale --git --icons --time-style=long-iso'
+    alias tree='eza --group-directories-first --tree --icons'
 }
 zinit wait lucid light-mode as'program' from'gh-r' for \
-    pick'bin/exa' \
-    atclone'cp -f completions/exa.zsh _exa' atpull'%atclone' \
-    atload'__exa_atload' \
-    @'ogham/exa'
+    pick'bin/eza' \
+    atclone'cp -f completions/eza.zsh _eza' atpull'%atclone' \
+    atload'__eza_atload' \
+    @'eza-community/eza'
 
 ### yq ###
 zinit wait lucid light-mode as'program' from'gh-r' for \
@@ -180,7 +180,7 @@ export ZENO_SCRIPT_DIR="$ZENO_CONFIG_HOME/scripts"
 export ZENO_ENABLE_SOCK=1
 # export ZENO_DISABLE_BUILTIN_COMPLETION=1
 export ZENO_GIT_CAT="bat --color=always"
-export ZENO_GIT_TREE="exa --tree"
+export ZENO_GIT_TREE="eza --tree"
 
 __zeno_atload() {
     "$ZENO_CONFIG_HOME/config.ts"

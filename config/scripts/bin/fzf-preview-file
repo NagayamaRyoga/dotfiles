@@ -9,8 +9,8 @@ if [ ! -e "$1" ]; then
 fi
 
 if [ -d "$1" ]; then
-    if (( ${+commands[exa]} )); then
-        exa -T -L3 -a --git-ignore --ignore-glob=".git" --icons --color=always "$@"
+    if (( ${+commands[eza]} )); then
+        eza -T -L3 -a --git-ignore --ignore-glob=".git" --icons --color=always "$@"
     elif (( ${+commands[tree]} )); then
         tree -L3 "$@"
     else

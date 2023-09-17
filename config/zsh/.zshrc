@@ -61,8 +61,8 @@ zshaddhistory() {
 
 chpwd() {
     printf "\e[34m%s\e[m:\n" "${PWD/$HOME/~}"
-    if (( ${+commands[exa]} )); then
-        exa --group-directories-first --icons -a
+    if (( ${+commands[eza]} )); then
+        eza --group-directories-first --icons -a
     else
         ls -a
     fi
