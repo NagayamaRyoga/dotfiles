@@ -175,18 +175,20 @@ zle -N zle-keymap-select
 
 # sheldon
 sheldon::load() {
+    local profile="$1"
     local plugins_file="$SHELDON_CONFIG_DIR/plugins.toml"
-    local cache_file="$XDG_CACHE_HOME/sheldon/plugins.zsh"
+    local cache_file="$XDG_CACHE_HOME/sheldon/$profile.zsh"
     if [[ ! -f "$cache_file" || "$plugins_file" -nt "$cache_file" ]]; then
         mkdir -p "$XDG_CACHE_HOME/sheldon"
-        sheldon source >"$cache_file"
+        sheldon --profile="$profile" source >"$cache_file"
         zcompile "$cache_file"
     fi
     \builtin source "$cache_file"
 }
 
 sheldon::update() {
-    sheldon lock --update
+    sheldon --profile="eager" lock --update
+    sheldon --profile="lazy" lock --update
 }
 
-sheldon::load
+sheldon::load eager

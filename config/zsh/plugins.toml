@@ -15,10 +15,17 @@ defer0 = "{{ hooks | get: \"pre\" | nl }}{% for file in files %}zsh-defer -a sou
 [plugins.zsh-defer]
 github = "romkatv/zsh-defer"
 apply = ["source"]
+profiles = ["eager"]
 
 [plugins.jargon]
 local = "~/.local/share/gh-red/packages/github.com/NagayamaRyoga/jargon"
 apply = ["source"]
+profiles = ["eager"]
+
+[plugins.lazy]
+local = "~/.config/zsh"
+use = ["lazy.zsh"]
+profiles = ["eager"]
 
 ####################
 # lazy
@@ -28,9 +35,11 @@ apply = ["source"]
 github = "zsh-users/zsh-completions"
 dir = "src"
 apply = ["fpath"]
+profiles = ["lazy"]
 
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
+profiles = ["lazy"]
 
 [plugins.zsh-history-substring-search]
 github = "zsh-users/zsh-history-substring-search"
@@ -40,9 +49,11 @@ bindkey "${terminfo[kcud1]}" history-substring-search-down # arrow-down
 bindkey "^[[A" history-substring-search-up   # arrow-up
 bindkey "^[[B" history-substring-search-down # arrow-down
 """
+profiles = ["lazy"]
 
 [plugins.fast-syntax-highlighting]
 github = "zdharma-continuum/fast-syntax-highlighting"
+profiles = ["lazy"]
 
 [plugins.asdf]
 github = "asdf-vm/asdf"
@@ -51,11 +62,13 @@ export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
 export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
 """
 # TODO: asdf plugin update --all
+profiles = ["lazy"]
 
 [plugins.asdf-completion]
 github = "asdf-vm/asdf"
 apply = ["fpath"]
 dir = "completions"
+profiles = ["lazy"]
 
 [plugins.zsh-replace-multiple-dots]
 github = "momo-lab/zsh-replace-multiple-dots"
@@ -70,6 +83,7 @@ replace_multiple_dots_exclude_go() {
 zle -N .replace_multiple_dots replace_multiple_dots
 zle -N replace_multiple_dots replace_multiple_dots_exclude_go
 """
+profiles = ["lazy"]
 
 [plugins.zeno]
 github = "yuki-yano/zeno.zsh"
@@ -100,20 +114,27 @@ __zeno_chpwd() {
 }
 add-zsh-hook chpwd __zeno_chpwd
 """
+profiles = ["lazy"]
 
 [plugins.direnv]
 local = "~/.local/share/gh-red/packages/github.com/direnv/direnv"
+profiles = ["lazy"]
 
 [plugins.zsh-autopair]
 github = "hlissner/zsh-autopair" # read after zeno
+profiles = ["lazy"]
 
 # programs
 [plugins.forgit]
 github = "wfxr/forgit"
 dir = "bin"
 apply = ["path"]
+profiles = ["lazy"]
 
 # local
-[plugins.lazy]
-local = "~/.config/zsh"
-use = ["lazy.zsh"]
+[plugins.compinit]
+inline = """
+autoload -Uz compinit
+zsh-defer -a -t0.01 compinit -d "$XDG_STATE_HOME/zcompdump"
+"""
+profiles = ["lazy"]
