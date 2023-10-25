@@ -23,7 +23,6 @@ case "$OSTYPE" in
         )
         alias pp='pbcopy'
         alias p='pbpaste'
-        alias chrome='open -a "Google Chrome"'
     ;;
 esac
 
@@ -58,6 +57,13 @@ re() {
     "$EDITOR" +"$line" "$file"
 }
 
+### bat ###
+if (( ${+commands[bat]} )); then
+    export MANPAGER="sh -c 'col -bx | bat --color=always --language=man --plain'"
+
+    alias cat='bat --paging=never'
+fi
+
 ### diff ###
 diff() {
     command diff "$@" | bat --paging=never --plain --language=diff
@@ -71,18 +77,6 @@ zinit wait lucid blockf light-mode as'program' from'gh-r' for \
     atclone'./direnv hook zsh >direnv.zsh; zcompile direnv.zsh' atpull'%atclone' \
     src'direnv.zsh' \
     @'direnv/direnv'
-
-### FZF ###
-export FZF_DEFAULT_OPTS='--reverse --border --ansi --bind="ctrl-d:print-query,ctrl-p:replace-query"'
-export FZF_DEFAULT_COMMAND='fd --hidden --color=always'
-
-### bat ###
-export MANPAGER="sh -c 'col -bx | bat --color=always --language=man --plain'"
-
-alias cat='bat --paging=never'
-
-### ripgrep ###
-export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 
 ### zsh-history-substring-search ###
 __zsh_history_substring_search_atload() {
@@ -201,11 +195,6 @@ zinit wait lucid light-mode for \
     atload'__zeno_atload' \
     @'yuki-yano/zeno.zsh'
 
-### Emojify ###
-zinit wait lucid light-mode as'program' for \
-    atclone'rm -f *.{py,bats}' atpull'%atclone' \
-    @'mrowa44/emojify'
-
 ### Forgit ###
 __forgit_atinit() {
     export FORGIT_INSTALL_DIR="$PWD"
@@ -275,7 +264,7 @@ cmaket() { ctest --verbose --test-dir "${1:-$(git rev-parse --show-toplevel)/bui
 
 ### Docker ###
 docker() {
-    if [ "$#" -eq 0 ] || [ "$1" = "compose" ] || ! command -v "docker-$1" >/dev/null; then
+    if [[ "$#" -eq 0 ]] || [[ "$1" = "compose" ]] || ! command -v "docker-$1" >/dev/null; then
         command docker "${@:1}"
     else
         "docker-$1" "${@:2}"
@@ -283,7 +272,7 @@ docker() {
 }
 
 docker-rm() {
-    if [ "$#" -eq 0 ]; then
+    if [[ "$#" -eq 0 ]]; then
         command docker ps -a | fzf --exit-0 --multi --header-lines=1 | awk '{ print $1 }' | xargs -r docker rm --
     else
         command docker rm "$@"
@@ -291,7 +280,7 @@ docker-rm() {
 }
 
 docker-rmi() {
-    if [ "$#" -eq 0 ]; then
+    if [[ "$#" -eq 0 ]]; then
         command docker images | fzf --exit-0 --multi --header-lines=1 | awk '{ print $3 }' | xargs -r docker rmi --
     else
         command docker rmi "$@"
@@ -346,8 +335,15 @@ export MYSQL_HISTFILE="$XDG_STATE_HOME/mysql_history"
 ### PostgreSQL ###
 export PSQL_HISTORY="$XDG_STATE_HOME/psql_history"
 
+### FZF ###
+export FZF_DEFAULT_OPTS='--reverse --border --ansi --bind="ctrl-d:print-query,ctrl-p:replace-query"'
+export FZF_DEFAULT_COMMAND='fd --hidden --color=always'
+
+### ripgrep ###
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
+
 ### local ###
-if [ -f "$ZDOTDIR/local.zsh" ]; then
+if [[ -f "$ZDOTDIR/local.zsh" ]]; then
     source "$ZDOTDIR/local.zsh"
 fi
 

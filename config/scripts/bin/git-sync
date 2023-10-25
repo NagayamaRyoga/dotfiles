@@ -32,23 +32,23 @@ for full_branch in $branches; do
     remote_branch="refs/remotes/$remote/$branch"
     gone=0
 
-    if [ "$(git config branch."$branch".remote)" = "$remote" ]; then
+    if [[ "$(git config branch."$branch".remote)" = "$remote" ]]; then
         if ! remote_branch="$(git rev-parse -q --symbolic-full-name "$branch@{upstream}" 2>/dev/null)"; then
             remote_branch=""
             gone=1
         fi
-    elif [ ! -f "$(git rev-parse --git-path "remote_branch")" ]; then
+    elif [[ ! -f "$(git rev-parse --git-path "remote_branch")" ]]; then
         remote_branch=""
     fi
 
-    if [ -n "$remote_branch" ]; then
+    if [[ -n "$remote_branch" ]]; then
         local_hash="$(git rev-parse -q "$full_branch")"
         remote_hash="$(git rev-parse -q "$remote_branch")"
 
-        if [ "$local_hash" = "$remote_hash" ]; then
+        if [[ "$local_hash" = "$remote_hash" ]]; then
             :
         elif git merge-base --is-ancestor "$local_hash" "$remote_hash"; then
-            if [ "$branch" = "$current_branch" ]; then
+            if [[ "$branch" = "$current_branch" ]]; then
                 git merge --ff-only --quiet "$remote_branch"
             else
                 git update-ref "$full_branch" "$remote_branch"
@@ -57,11 +57,11 @@ for full_branch in $branches; do
         else
             echo "warning: '${branch}' seems to contain unpushed commits" >/dev/stderr
         fi
-    elif [ "$gone" -eq 1 ]; then
+    elif [[ "$gone" -eq 1 ]]; then
         local_hash="$(git rev-parse -q "$full_branch")"
 
         if git merge-base --is-ancestor "$full_branch" "$full_default_branch"; then
-            if [ "$branch" = "$current_branch" ]; then
+            if [[ "$branch" = "$current_branch" ]]; then
                 git switch "$default_branch"
                 current_branch="$default_branch"
             fi

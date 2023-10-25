@@ -3,12 +3,12 @@ set -x
 # shellcheck source=./scripts/common.bash
 source "$(dirname "$0")/common.bash"
 
-if [ ! -d "$HOME/.ssh" ]; then
+if [[ ! -d "$HOME/.ssh" ]]; then
     mkdir -p "$HOME/.ssh"
     chmod 700 "$HOME/.ssh"
 fi
 
-if [ ! -d "$HOME/.gnupg" ]; then
+if [[ ! -d "$HOME/.gnupg" ]]; then
     mkdir -p "$HOME/.gnupg"
     chmod 700 "$HOME/.gnupg"
 fi

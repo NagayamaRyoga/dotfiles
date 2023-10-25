@@ -4,5 +4,5 @@ git config --get-regex '^users\.[^.]+\.email' |
     while read -r k; do
         name="$(git config users."$k".name)"
         email="$(git config users."$k".email)"
-        [ -n "$name" ] && [ -n "$email" ] && echo "$k: $name <$email>"
+        [[ -n "$name" ]] && [[ -n "$email" ]] && echo "$k: $name <$email>"
     done

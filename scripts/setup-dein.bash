@@ -6,7 +6,7 @@ source "$(dirname "$0")/common.bash"
 readonly repo="github.com/Shougo/dein.vim"
 readonly install_dir="$XDG_DATA_HOME/dein/repos/$repo"
 
-if [ -d "$install_dir" ]; then
+if [[ -d "$install_dir" ]]; then
     echo "dein.vim is already installed."
     git -C "$install_dir" pull
 

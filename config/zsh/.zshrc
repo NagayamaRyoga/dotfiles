@@ -77,7 +77,7 @@ zinit light-mode from'gh-r' as'program' for \
 ### key bindings ###
 widget::history() {
     local selected="$(history -inr 1 | fzf --exit-0 --query "$LBUFFER" | cut -d' ' -f4- | sed 's/\\n/\n/g')"
-    if [ -n "$selected" ]; then
+    if [[ -n "$selected" ]]; then
         BUFFER="$selected"
         CURSOR=$#BUFFER
     fi
@@ -105,7 +105,7 @@ widget::ghq::select() {
 }
 widget::ghq::dir() {
     local selected="$(widget::ghq::select)"
-    if [ -z "$selected" ]; then
+    if [[ -z "$selected" ]]; then
         return
     fi
 
@@ -116,22 +116,22 @@ widget::ghq::dir() {
 }
 widget::ghq::session() {
     local selected="$(widget::ghq::select)"
-    if [ -z "$selected" ]; then
+    if [[ -z "$selected" ]]; then
         return
     fi
 
     local repo_dir="$(ghq list --exact --full-path "$selected")"
     local session_name="${selected//[:. ]/-}"
 
-    if [ -z "$TMUX" ]; then
+    if [[ -z "$TMUX" ]]; then
         BUFFER="tmux new-session -A -s ${(q)session_name} -c ${(q)repo_dir}"
         zle accept-line
-    elif [ "$(tmux display-message -p "#S")" = "$session_name" ] && [ "$PWD" != "$repo_dir" ]; then
-        BUFFER="cd ${(q)repo_dir}"
-        zle accept-line
-    else
+    elif [[ "$(tmux display-message -p "#S")" != "$session_name" ]]; then
         tmux new-session -d -s "$session_name" -c "$repo_dir" 2>/dev/null
         tmux switch-client -t "$session_name"
+    else
+        BUFFER="cd ${(q)repo_dir}"
+        zle accept-line
     fi
     zle -R -c # refresh screen
 }

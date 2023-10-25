@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
-if [ "$#" -ne 1 ]; then
+if [[ "$#" -ne 1 ]]; then
     echo "$0 <file>"
     return 1
 fi
-if [ ! -e "$1" ]; then
+if [[ ! -e "$1" ]]; then
     echo "$1 does not exist"
     return 1
 fi
 
-if [ -d "$1" ]; then
+if [[ -d "$1" ]]; then
     if (( ${+commands[eza]} )); then
         eza -T -L3 -a --git-ignore --ignore-glob=".git" --icons --color=always "$@"
     elif (( ${+commands[tree]} )); then
