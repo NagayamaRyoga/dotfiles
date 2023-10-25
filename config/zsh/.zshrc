@@ -24,11 +24,13 @@ path=(
     "$GOPATH/bin"(N-/)
     "$DENO_INSTALL/bin"(N-/)
     "$GEM_HOME/bin"(N-/)
+    "$GHRED_DATA_HOME/bin"(N-/)
     "$XDG_CONFIG_HOME/scripts/bin"(N-/)
     "$path[@]"
 )
 
 fpath=(
+    "$GHRED_DATA_HOME/completions"(N-/)
     "$XDG_DATA_HOME/zsh/completions"(N-/)
     "$fpath[@]"
 )

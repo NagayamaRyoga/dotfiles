@@ -5,8 +5,6 @@ source "$(dirname "$0")/common.bash"
 
 [ -n "$SKIP_DENO" ] && exit
 
-export DENO_INSTALL="${DENO_INSTALL:-$XDG_DATA_HOME/deno}"
-
 echo "Installing Deno..."
 curl -fsSL https://deno.land/x/install/install.sh | /bin/sh
 

@@ -64,6 +64,14 @@ if (( ${+commands[bat]} )); then
     alias cat='bat --paging=never'
 fi
 
+### eza ###
+if (( ${+commands[eza]} )); then
+    alias ls='eza --group-directories-first'
+    alias la='eza --group-directories-first -a'
+    alias ll='eza --group-directories-first -al --header --color-scale --git --icons --time-style=long-iso'
+    alias tree='eza --group-directories-first --tree --icons'
+fi
+
 ### diff ###
 diff() {
     command diff "$@" | bat --paging=never --plain --language=diff
@@ -99,14 +107,6 @@ zinit wait lucid blockf light-mode for \
     @'zsh-users/zsh-completions' \
     @'zdharma-continuum/fast-syntax-highlighting'
 
-### programs ###
-zinit wait lucid light-mode as'program' from'gh-r' for \
-    pick'delta*/delta'  @'dandavison/delta' \
-    pick'mmv*/mmv'      @'itchyny/mmv' \
-    pick'ripgrep*/rg'   @'BurntSushi/ripgrep' \
-    pick'ghq*/ghq'      @'x-motemen/ghq' \
-    if'! (( ${+commands[lazygit]} ))' @'jesseduffield/lazygit'
-
 ### asdf-vm ###
 __asdf_atinit() {
     export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
@@ -122,19 +122,6 @@ zinit wait lucid light-mode as'program' from'gh-r' for \
     pick'gh*/bin/gh' \
     atclone'./gh*/bin/gh completion -s zsh >_gh' atpull'%atclone' \
     @'cli/cli'
-
-### eza ###
-__eza_atload() {
-    alias ls='eza --group-directories-first'
-    alias la='eza --group-directories-first -a'
-    alias ll='eza --group-directories-first -al --header --color-scale --git --icons --time-style=long-iso'
-    alias tree='eza --group-directories-first --tree --icons'
-}
-zinit wait lucid light-mode as'program' from'gh-r' for \
-    pick'bin/eza' \
-    atclone'cp -f completions/eza.zsh _eza' atpull'%atclone' \
-    atload'__eza_atload' \
-    @'eza-community/eza'
 
 ### yq ###
 zinit wait lucid light-mode as'program' from'gh-r' for \

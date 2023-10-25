@@ -32,3 +32,7 @@ export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 export BUNDLE_USER_HOME="$XDG_CONFIG_HOME/bundle"
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
 export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle/plugin"
+
+### gh-red ###
+export GHRED_CONFIG_HOME="$XDG_CONFIG_HOME/gh-red"
+export GHRED_DATA_HOME="$XDG_DATA_HOME/gh-red"
