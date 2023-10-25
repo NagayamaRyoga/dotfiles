@@ -195,3 +195,6 @@ export TEALDEER_CONFIG_DIR="$XDG_CONFIG_HOME/tealdeer"
 if [[ -f "$ZDOTDIR/local.zsh" ]]; then
     source "$ZDOTDIR/local.zsh"
 fi
+
+autoload -Uz compinit
+compinit -d "$XDG_STATE_HOME/zcompdump"

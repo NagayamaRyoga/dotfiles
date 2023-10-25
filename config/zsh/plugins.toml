@@ -98,9 +98,3 @@ apply = ["path"]
 [plugins.lazy]
 local = "~/.config/zsh"
 use = ["lazy.zsh"]
-
-[plugins.compinit]
-inline = """
-autoload -Uz compinit
-compinit -d "$XDG_STATE_HOME/zcompdump"
-"""
