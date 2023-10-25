@@ -1,9 +1,28 @@
 shell = "zsh"
 
+apply = ["defer"]
+
+[templates]
+defer = "{{ hooks | get: \"pre\" | nl }}{% for file in files %}zsh-defer -a -t0.01 source \"{{ file }}\"\n{% endfor %}{{ hooks | get: \"post\" | nl }}"
+defer0 = "{{ hooks | get: \"pre\" | nl }}{% for file in files %}zsh-defer -a source \"{{ file }}\"\n{% endfor %}{{ hooks | get: \"post\" | nl }}"
+
 [plugins]
+
+####################
+# eager
+####################
+
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+apply = ["source"]
 
 [plugins.jargon]
 local = "~/.local/share/gh-red/packages/github.com/NagayamaRyoga/jargon"
+apply = ["source"]
+
+####################
+# lazy
+####################
 
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
@@ -63,7 +82,7 @@ export ZENO_ENABLE_SOCK=1
 export ZENO_GIT_CAT="bat --color=always"
 export ZENO_GIT_TREE="eza --tree"
 
-"$ZENO_CONFIG_HOME/config.ts"
+zsh-defer -a -t0.01 "$ZENO_CONFIG_HOME/config.ts"
 """
 hooks.post = """
 __zeno_bindkey() {
@@ -73,7 +92,7 @@ __zeno_bindkey() {
     bindkey '^X '  zeno-insert-space
     bindkey '^X^M' accept-line
 }
-__zeno_bindkey
+zsh-defer -a -t0.01 __zeno_bindkey
 
 __zeno_chpwd() {
     "$ZENO_CONFIG_HOME/config.ts"
