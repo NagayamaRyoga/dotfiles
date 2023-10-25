@@ -174,8 +174,19 @@ zle -N zle-line-finish
 zle -N zle-keymap-select
 
 # sheldon
+sheldon::load() {
+    local plugins_file="$SHELDON_CONFIG_DIR/plugins.toml"
+    local cache_file="$XDG_CACHE_HOME/sheldon/plugins.zsh"
+    if [[ ! -f "$cache_file" || "$plugins_file" -nt "$cache_file" ]]; then
+        mkdir -p "$XDG_CACHE_HOME/sheldon"
+        sheldon source >"$cache_file"
+        zcompile "$cache_file"
+    fi
+    \builtin source "$cache_file"
+}
+
 sheldon::update() {
     sheldon lock --update
 }
 
-eval "$(sheldon source)"
+sheldon::load
