@@ -48,6 +48,16 @@ setopt MAGIC_EQUAL_SUBST
 setopt PRINT_EIGHT_BIT
 setopt NO_FLOW_CONTROL
 
+### source ###
+source() {
+    local input="$1"
+    local cache="$input.zwc"
+    if [[ ! -f "$cache" || "$input" -nt "$cache" ]]; then
+        zcompile "$input"
+    fi
+    \builtin source "$@"
+}
+
 ### hooks ###
 zshaddhistory() {
     local line="${1%%$'\n'}"
