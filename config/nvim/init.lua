@@ -102,6 +102,8 @@ set_keymaps({
   -- { 'terminal', '<ESC>',    '<C-\\><C-n>',  { noremap = true } },
 })
 
+vim.g.loaded_ruby_provider = 0
+
 vim.cmd [[
 function! MyKeyMapsDiff()
     nnoremap <silent>J  /^[+-]<CR>
