@@ -1,6 +1,11 @@
+### ls-colors ###
+export LS_COLORS="di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32"
+
 ### Aliases ###
 alias la='ls -a'
 alias ll='ls -al'
+alias gdb='gdb -q -nh'
+alias wget='wget --hsts-file="$XDG_STATE_HOME/wget-hsts"'
 
 case "$OSTYPE" in
     linux*)
@@ -79,169 +84,22 @@ diff() {
 }
 alias diffall='diff --new-line-format="+%L" --old-line-format="-%L" --unchanged-line-format=" %L"'
 
-### direnv ###
-zinit wait lucid blockf light-mode as'program' from'gh-r' for \
-    mv'direnv* -> direnv' \
-    atclone'./direnv hook zsh >direnv.zsh; zcompile direnv.zsh' atpull'%atclone' \
-    src'direnv.zsh' \
-    @'direnv/direnv'
-
-### zsh-history-substring-search ###
-__zsh_history_substring_search_atload() {
-    bindkey "${terminfo[kcuu1]}" history-substring-search-up   # arrow-up
-    bindkey "${terminfo[kcud1]}" history-substring-search-down # arrow-down
-    bindkey "^[[A" history-substring-search-up   # arrow-up
-    bindkey "^[[B" history-substring-search-down # arrow-down
-}
-zinit wait lucid light-mode for \
-    atload'__zsh_history_substring_search_atload' \
-    @'zsh-users/zsh-history-substring-search'
-
-### zsh-autopair ###
-zinit wait'1' lucid light-mode for \
-    @'hlissner/zsh-autopair'
-
-### zsh plugins ###
-zinit wait lucid blockf light-mode for \
-    @'zsh-users/zsh-autosuggestions' \
-    @'zsh-users/zsh-completions' \
-    @'zdharma-continuum/fast-syntax-highlighting'
-
-### asdf-vm ###
-__asdf_atinit() {
-    export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
-    export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
-}
-zinit wait lucid light-mode for \
-    atpull'asdf plugin update --all' \
-    atinit'__asdf_atinit' \
-    @'asdf-vm/asdf'
-
-### GitHub CLI ###
-zinit wait lucid light-mode as'program' from'gh-r' for \
-    pick'gh*/bin/gh' \
-    atclone'./gh*/bin/gh completion -s zsh >_gh' atpull'%atclone' \
-    @'cli/cli'
-
-### yq ###
-zinit wait lucid light-mode as'program' from'gh-r' for \
-    mv'yq* -> yq' \
-    atclone'./yq shell-completion zsh >_yq' atpull'%atclone' \
-    @'mikefarah/yq'
-
 ### hgrep ###
-__hgrep_atload() {
-    alias hgrep="hgrep --hidden --glob='!.git/'"
-}
-zinit wait lucid light-mode as'program' from'gh-r' for \
-    pick'hgrep*/hgrep' \
-    atclone'./hgrep*/hgrep --generate-completion-script zsh >_hgrep' atpull'%atclone' \
-    atload'__hgrep_atload' \
-    @'rhysd/hgrep'
+alias hgrep="hgrep --hidden --glob='!.git/'"
 
 ### navi ###
+export NAVI_CONFIG="$XDG_CONFIG_HOME/navi/config.yaml"
+
 __navi_search() {
     LBUFFER="$(navi --print --query="$LBUFFER")"
     zle reset-prompt
 }
-__navi_atload() {
-    export NAVI_CONFIG="$XDG_CONFIG_HOME/navi/config.yaml"
-
-    zle -N __navi_search
-    bindkey '^N' __navi_search
-}
-zinit wait lucid light-mode as'program' from'gh-r' for \
-    atload'__navi_atload' \
-    @'denisidoro/navi'
-
-### zeno.zsh ###
-export ZENO_HOME="$(mktemp -d -t zeno.XXXXXX)"
-export ZENO_CONFIG_HOME="$XDG_CONFIG_HOME/zeno"
-export ZENO_SCRIPT_DIR="$ZENO_CONFIG_HOME/scripts"
-export ZENO_ENABLE_SOCK=1
-# export ZENO_DISABLE_BUILTIN_COMPLETION=1
-export ZENO_GIT_CAT="bat --color=always"
-export ZENO_GIT_TREE="eza --tree"
-
-__zeno_atload() {
-    "$ZENO_CONFIG_HOME/config.ts"
-    bindkey ' '  zeno-auto-snippet
-    bindkey '^M' zeno-auto-snippet-and-accept-line
-    bindkey '^P' zeno-completion
-    bindkey '^X '  zeno-insert-space
-    bindkey '^X^M' accept-line
-
-    add-zsh-hook chpwd __zeno_chpwd
-}
-__zeno_chpwd() {
-    "$ZENO_CONFIG_HOME/config.ts"
-    zeno-restart-server
-}
-
-zinit wait lucid light-mode for \
-    atload'__zeno_atload' \
-    @'yuki-yano/zeno.zsh'
-
-### Forgit ###
-__forgit_atinit() {
-    export FORGIT_INSTALL_DIR="$PWD"
-    export FORGIT_NO_ALIASES=1
-}
-zinit wait lucid light-mode as'program' for \
-    atload'__forgit_atinit' \
-    pick'bin/git-forgit' \
-    @'wfxr/forgit'
-
-### zsh-replace-multiple-dots ###
-__replace_multiple_dots_atload() {
-    replace_multiple_dots_exclude_go() {
-        if [[ "$LBUFFER" =~ '^go ' ]]; then
-            zle self-insert
-        else
-            zle .replace_multiple_dots
-        fi
-    }
-
-    zle -N .replace_multiple_dots replace_multiple_dots
-    zle -N replace_multiple_dots replace_multiple_dots_exclude_go
-}
-
-zinit wait lucid light-mode for \
-    atload'__replace_multiple_dots_atload' \
-    @'momo-lab/zsh-replace-multiple-dots'
-
-### tealdeer ###
-__tealdeer_atclone() {
-    curl -sSL 'https://raw.githubusercontent.com/dbrgn/tealdeer/main/completion/zsh_tealdeer' -o _tealdeer
-}
-__tealdeer_atinit() {
-    export TEALDEER_CONFIG_DIR="$XDG_CONFIG_HOME/tealdeer"
-}
-zinit wait lucid light-mode as'program' from'gh-r' for \
-    mv'tealdeer* -> tldr' \
-    atclone'__tealdeer_atclone' atpull'%atclone' \
-    atinit'__tealdeer_atinit' \
-    @'dbrgn/tealdeer'
-
-### chpwd-recent-dirs ###
-add-zsh-hook chpwd chpwd_recent_dirs
-zstyle ':chpwd:*' recent-dirs-file "$XDG_STATE_HOME/chpwd-recent-dirs"
-
-### ls-colors ###
-export LS_COLORS="di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32"
-
-### less ###
-export LESSHISTFILE='-'
+zle -N __navi_search
+bindkey '^N' __navi_search
 
 ### completion styles ###
 zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-
-### GPG ###
-export GPG_TTY="$TTY"
-
-### wget ###
-alias wget='wget --hsts-file="$XDG_STATE_HOME/wget-hsts"'
 
 ### CMake ###
 alias cmaked='cmake -DCMAKE_BUILD_TYPE=Debug -B "$(git rev-parse --show-toplevel)/build"'
@@ -290,10 +148,11 @@ e() {
     fi
 }
 
-### Suffix alias ###
-alias -s {bz2,gz,tar,xz}='tar xvf'
-alias -s zip=unzip
-alias -s d=rdmd
+### GPG ###
+export GPG_TTY="$TTY"
+
+### less ###
+export LESSHISTFILE='-'
 
 ### Node.js ###
 export NODE_REPL_HISTORY="$XDG_STATE_HOME/node_history"
@@ -329,11 +188,10 @@ export FZF_DEFAULT_COMMAND='fd --hidden --color=always'
 ### ripgrep ###
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 
+### tealdeer ###
+export TEALDEER_CONFIG_DIR="$XDG_CONFIG_HOME/tealdeer"
+
 ### local ###
 if [[ -f "$ZDOTDIR/local.zsh" ]]; then
     source "$ZDOTDIR/local.zsh"
 fi
-
-### autoloads ###
-autoload -Uz _zinit
-zicompinit

@@ -1,10 +1,3 @@
-### zinit ###
-typeset -gAH ZINIT
-ZINIT[HOME_DIR]="$XDG_DATA_HOME/zinit"
-ZINIT[ZCOMPDUMP_PATH]="$XDG_STATE_HOME/zcompdump"
-ZINIT[NO_ALIASES]=1
-source "${ZINIT[HOME_DIR]}/bin/zinit.zsh"
-
 ### paths ###
 typeset -gU PATH path
 typeset -gU FPATH fpath
@@ -69,12 +62,6 @@ chpwd() {
         ls -a
     fi
 }
-
-### theme ###
-zinit light-mode from'gh-r' as'program' for \
-    atclone'./jargon init >jargon.zsh; zcompile jargon.zsh' atpull'%atclone' \
-    src'jargon.zsh' \
-    @'NagayamaRyoga/jargon'
 
 ### key bindings ###
 widget::history() {
@@ -176,7 +163,9 @@ zle -N zle-line-init
 zle -N zle-line-finish
 zle -N zle-keymap-select
 
-### plugins ###
-zinit wait lucid null for \
-    atinit'source "$ZDOTDIR/lazy.zsh"' \
-    @'zdharma-continuum/null'
+# sheldon
+sheldon::update() {
+    sheldon lock --update
+}
+
+eval "$(sheldon source)"

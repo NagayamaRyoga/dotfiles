@@ -1,0 +1,106 @@
+shell = "zsh"
+
+[plugins]
+
+[plugins.jargon]
+local = "~/.local/share/gh-red/packages/github.com/NagayamaRyoga/jargon"
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+dir = "src"
+apply = ["fpath"]
+
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+
+[plugins.zsh-history-substring-search]
+github = "zsh-users/zsh-history-substring-search"
+hooks.post = """
+bindkey "${terminfo[kcuu1]}" history-substring-search-up   # arrow-up
+bindkey "${terminfo[kcud1]}" history-substring-search-down # arrow-down
+bindkey "^[[A" history-substring-search-up   # arrow-up
+bindkey "^[[B" history-substring-search-down # arrow-down
+"""
+
+[plugins.fast-syntax-highlighting]
+github = "zdharma-continuum/fast-syntax-highlighting"
+
+[plugins.asdf]
+github = "asdf-vm/asdf"
+hooks.pre = """
+export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
+export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
+"""
+# TODO: asdf plugin update --all
+
+[plugins.asdf-completion]
+github = "asdf-vm/asdf"
+apply = ["fpath"]
+dir = "completions"
+
+[plugins.zsh-replace-multiple-dots]
+github = "momo-lab/zsh-replace-multiple-dots"
+hooks.post = """
+replace_multiple_dots_exclude_go() {
+    if [[ "$LBUFFER" =~ '^go ' ]]; then
+        zle self-insert
+    else
+        zle .replace_multiple_dots
+    fi
+}
+zle -N .replace_multiple_dots replace_multiple_dots
+zle -N replace_multiple_dots replace_multiple_dots_exclude_go
+"""
+
+[plugins.zeno]
+github = "yuki-yano/zeno.zsh"
+hooks.pre = """
+export ZENO_HOME="$(mktemp -d -t zeno.XXXXXX)"
+export ZENO_CONFIG_HOME="$XDG_CONFIG_HOME/zeno"
+export ZENO_SCRIPT_DIR="$ZENO_CONFIG_HOME/scripts"
+export ZENO_ENABLE_SOCK=1
+# export ZENO_DISABLE_BUILTIN_COMPLETION=1
+export ZENO_GIT_CAT="bat --color=always"
+export ZENO_GIT_TREE="eza --tree"
+
+"$ZENO_CONFIG_HOME/config.ts"
+"""
+hooks.post = """
+__zeno_bindkey() {
+    bindkey ' '  zeno-auto-snippet
+    bindkey '^M' zeno-auto-snippet-and-accept-line
+    bindkey '^P' zeno-completion
+    bindkey '^X '  zeno-insert-space
+    bindkey '^X^M' accept-line
+}
+__zeno_bindkey
+
+__zeno_chpwd() {
+    "$ZENO_CONFIG_HOME/config.ts"
+    zeno-restart-server
+}
+add-zsh-hook chpwd __zeno_chpwd
+"""
+
+[plugins.direnv]
+local = "~/.local/share/gh-red/packages/github.com/direnv/direnv"
+
+[plugins.zsh-autopair]
+github = "hlissner/zsh-autopair" # read after zeno
+
+# programs
+[plugins.forgit]
+github = "wfxr/forgit"
+dir = "bin"
+apply = ["path"]
+
+# local
+[plugins.lazy]
+local = "~/.config/zsh"
+use = ["lazy.zsh"]
+
+[plugins.compinit]
+inline = """
+autoload -Uz compinit
+compinit -d "$XDG_STATE_HOME/zcompdump"
+"""
