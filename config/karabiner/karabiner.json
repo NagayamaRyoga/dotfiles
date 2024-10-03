@@ -1,8 +1,10 @@
 {
     "global": {
+        "ask_for_confirmation_before_quitting": true,
         "check_for_updates_on_startup": true,
         "show_in_menu_bar": true,
-        "show_profile_name_in_menu_bar": false
+        "show_profile_name_in_menu_bar": false,
+        "unsafe_ui": false
     },
     "profiles": [
         {
@@ -10,15 +12,22 @@
                 "parameters": {
                     "basic.simultaneous_threshold_milliseconds": 50,
                     "basic.to_delayed_action_delay_milliseconds": 500,
-                    "basic.to_if_alone_timeout_milliseconds": 1000,
-                    "basic.to_if_held_down_threshold_milliseconds": 500,
+                    "basic.to_if_alone_timeout_milliseconds": 250,
+                    "basic.to_if_held_down_threshold_milliseconds": 250,
                     "mouse_motion_to_scroll.speed": 100
                 },
                 "rules": [
                     {
-                        "description": "Change Command+Backward-Delete and Option+Backward-Delete",
+                        "description": "Exchange Command+Backspace/Delete and Option+Backspace/Delete",
                         "manipulators": [
                             {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "delete_or_backspace",
                                     "modifiers": {
@@ -26,7 +35,7 @@
                                             "command"
                                         ],
                                         "optional": [
-                                            "any"
+                                            "shift"
                                         ]
                                     }
                                 },
@@ -39,13 +48,15 @@
                                     }
                                 ],
                                 "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Change Option+Backward-Delete to Command+Backward-Delete",
-                        "manipulators": [
+                            },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "delete_or_backspace",
                                     "modifiers": {
@@ -53,7 +64,7 @@
                                             "option"
                                         ],
                                         "optional": [
-                                            "any"
+                                            "shift"
                                         ]
                                     }
                                 },
@@ -66,46 +77,134 @@
                                     }
                                 ],
                                 "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Change Command+Forward-Delete and Option+Forward-Delete",
-                        "manipulators": [
+                            },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
                                 "from": {
-                                    "key_code": "forward_delete",
+                                    "key_code": "delete_forward",
                                     "modifiers": {
                                         "mandatory": [
                                             "command"
                                         ],
                                         "optional": [
-                                            "any"
+                                            "shift"
                                         ]
                                     }
                                 },
                                 "to": [
                                     {
-                                        "key_code": "forward_delete",
+                                        "key_code": "delete_forward",
                                         "modifiers": [
                                             "option"
                                         ]
                                     }
                                 ],
                                 "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Change Option+Forward-Delete to Command+Forward-Delete",
-                        "manipulators": [
+                            },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
                                 "from": {
-                                    "key_code": "forward_delete",
+                                    "key_code": "delete_forward",
                                     "modifiers": {
                                         "mandatory": [
                                             "option"
                                         ],
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_forward",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "delete_or_backspace",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_forward",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "delete_or_backspace",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_forward",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "delete_or_backspace",
+                                    "modifiers": {
                                         "optional": [
                                             "any"
                                         ]
@@ -113,10 +212,88 @@
                                 },
                                 "to": [
                                     {
-                                        "key_code": "forward_delete",
+                                        "key_code": "delete_forward"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "delete_or_backspace",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_forward",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "delete_or_backspace",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_forward",
                                         "modifiers": [
                                             "command"
                                         ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "delete_or_backspace",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_forward"
                                     }
                                 ],
                                 "type": "basic"
@@ -128,30 +305,6 @@
                         "manipulators": [
                             {
                                 "from": {
-                                    "key_code": "right_arrow",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "command",
-                                            "option"
-                                        ],
-                                        "optional": [
-                                            "any"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "right_arrow",
-                                        "modifiers": [
-                                            "command",
-                                            "option"
-                                        ]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "from": {
                                     "key_code": "left_arrow",
                                     "modifiers": {
                                         "mandatory": [
@@ -176,10 +329,31 @@
                             },
                             {
                                 "from": {
-                                    "key_code": "up_arrow",
+                                    "key_code": "left_arrow",
                                     "modifiers": {
                                         "mandatory": [
-                                            "command",
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "left_arrow",
+                                    "modifiers": {
+                                        "mandatory": [
                                             "option"
                                         ],
                                         "optional": [
@@ -189,10 +363,9 @@
                                 },
                                 "to": [
                                     {
-                                        "key_code": "up_arrow",
+                                        "key_code": "left_arrow",
                                         "modifiers": [
-                                            "command",
-                                            "option"
+                                            "command"
                                         ]
                                     }
                                 ],
@@ -224,7 +397,7 @@
                             },
                             {
                                 "from": {
-                                    "key_code": "right_arrow",
+                                    "key_code": "down_arrow",
                                     "modifiers": {
                                         "mandatory": [
                                             "command"
@@ -236,7 +409,7 @@
                                 },
                                 "to": [
                                     {
-                                        "key_code": "right_arrow",
+                                        "key_code": "down_arrow",
                                         "modifiers": [
                                             "option"
                                         ]
@@ -246,10 +419,10 @@
                             },
                             {
                                 "from": {
-                                    "key_code": "left_arrow",
+                                    "key_code": "down_arrow",
                                     "modifiers": {
                                         "mandatory": [
-                                            "command"
+                                            "option"
                                         ],
                                         "optional": [
                                             "any"
@@ -258,8 +431,32 @@
                                 },
                                 "to": [
                                     {
-                                        "key_code": "left_arrow",
+                                        "key_code": "down_arrow",
                                         "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "up_arrow",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow",
+                                        "modifiers": [
+                                            "command",
                                             "option"
                                         ]
                                     }
@@ -290,72 +487,6 @@
                             },
                             {
                                 "from": {
-                                    "key_code": "down_arrow",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "command"
-                                        ],
-                                        "optional": [
-                                            "any"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "down_arrow",
-                                        "modifiers": [
-                                            "option"
-                                        ]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "from": {
-                                    "key_code": "right_arrow",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "option"
-                                        ],
-                                        "optional": [
-                                            "any"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "right_arrow",
-                                        "modifiers": [
-                                            "command"
-                                        ]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "from": {
-                                    "key_code": "left_arrow",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "option"
-                                        ],
-                                        "optional": [
-                                            "any"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "left_arrow",
-                                        "modifiers": [
-                                            "command"
-                                        ]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "from": {
                                     "key_code": "up_arrow",
                                     "modifiers": {
                                         "mandatory": [
@@ -378,7 +509,53 @@
                             },
                             {
                                 "from": {
-                                    "key_code": "down_arrow",
+                                    "key_code": "right_arrow",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": [
+                                            "command",
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "right_arrow",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "right_arrow",
                                     "modifiers": {
                                         "mandatory": [
                                             "option"
@@ -390,7 +567,7 @@
                                 },
                                 "to": [
                                     {
-                                        "key_code": "down_arrow",
+                                        "key_code": "right_arrow",
                                         "modifiers": [
                                             "command"
                                         ]
@@ -409,13 +586,18 @@
                                     "modifiers": {
                                         "mandatory": [
                                             "shift"
-                                        ],
-                                        "optional": [
-                                            "caps_lock"
                                         ]
                                     }
                                 },
                                 "to": [
+                                    {
+                                        "key_code": "left_command",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "to_if_alone": [
                                     {
                                         "key_code": "hyphen"
                                     },
@@ -434,13 +616,18 @@
                                     "modifiers": {
                                         "mandatory": [
                                             "command"
-                                        ],
-                                        "optional": [
-                                            "caps_lock"
                                         ]
                                     }
                                 },
                                 "to": [
+                                    {
+                                        "key_code": "left_command",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "to_if_alone": [
                                     {
                                         "key_code": "equal_sign"
                                     },
@@ -454,8 +641,283 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "caps_lock"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_command",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "hyphen"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_command",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "hyphen",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Lower Layer",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "1"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "1",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "2"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "2",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "3"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "3",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "4"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "4",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "5"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "5",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "6"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "6",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "7"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "7",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "8"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "8",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "9"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "9",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "0"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "0",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "hyphen"
                                 },
                                 "to": [
                                     {
@@ -465,6 +927,2860 @@
                                         ]
                                     }
                                 ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "equal_sign"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "equal_sign",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "q"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "1",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "w"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "2",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "e"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "3",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "r"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "4",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "t"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "5",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "6",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "7",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "d"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "8",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "f"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "equal_sign"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "g"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "equal_sign",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": [
+                                            "command",
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "down_arrow",
+                                        "modifiers": [
+                                            "command",
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "down_arrow",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "down_arrow",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "down_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "i",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow",
+                                        "modifiers": [
+                                            "command",
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "i",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "i",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "i",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": [
+                                            "command",
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "u",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "home"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "o",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "end"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "p",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "page_up"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "semicolon",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "page_down"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "z"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "9",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "x"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "0",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "c"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "slash"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "v"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "slash",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "open_bracket"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "open_bracket",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "close_bracket"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "close_bracket",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "right_option",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "key_up_value": 0,
+                                            "name": "layer",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "escape"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Raise Layer",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": [
+                                            "command",
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "down_arrow",
+                                        "modifiers": [
+                                            "command",
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "down_arrow",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "down_arrow",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "down_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow",
+                                        "modifiers": [
+                                            "command",
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": [
+                                            "command",
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "q",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "home"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "e",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "end"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "r",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "page_up"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "f",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "page_down"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "z"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "x"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde",
+                                        "modifiers": [
+                                            "shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "right_control",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "key_up_value": 0,
+                                            "name": "layer",
+                                            "value": 2
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "MacBook Internal Keyboard",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 1452
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "right_command",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "key_up_value": 0,
+                                            "name": "layer",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "escape"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "REALFORCE",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "product_id": 4,
+                                                "vendor_id": 11240
+                                            }
+                                        ],
+                                        "type": "device_exists_if"
+                                    },
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "product_id": 328,
+                                                "vendor_id": 2131
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "spacebar",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "key_up_value": 0,
+                                            "name": "layer",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "return_or_enter"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "product_id": 4,
+                                                "vendor_id": 11240
+                                            }
+                                        ],
+                                        "type": "device_exists_if"
+                                    },
+                                    {
+                                        "identifiers": [
+                                            {
+                                                "product_id": 328,
+                                                "vendor_id": 2131
+                                            }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "b",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_or_backspace"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "JA tsrngn",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "r",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "d"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "t",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "l"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "y",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "v"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "u",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "y"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "i",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "r"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "o",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "j"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "u"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "o"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "f",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "i"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "t"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "s"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "k"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "semicolon",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "comma"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "quote",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "period"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "v",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "f"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "comma",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "hyphen"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "period",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "semicolon"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "hyphen",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "quote"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "r",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "d"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "t",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "l"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "y",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "v"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "u",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "y"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "i",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "r"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "o",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "j"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "u"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "o"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "f",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "i"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "t"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "s"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "k"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "semicolon",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "comma"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "quote",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "period"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "v",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "f"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "comma",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "hyphen"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "period",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "semicolon"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "hyphen",
+                                    "modifiers": {
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "quote"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "page_up"
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 2000
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "tsrngn",
+                                            "value": 0
+                                        }
+                                    },
+                                    {
+                                        "set_notification_message": {
+                                            "id": "tsrngn",
+                                            "text": "QWERTY MODE"
+                                        }
+                                    }
+                                ],
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_notification_message": {
+                                                "id": "tsrngn",
+                                                "text": ""
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_notification_message": {
+                                                "id": "tsrngn",
+                                                "text": ""
+                                            }
+                                        }
+                                    ]
+                                },
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    },
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "page_down"
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 2000
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "tsrngn",
+                                            "value": 0
+                                        }
+                                    },
+                                    {
+                                        "set_notification_message": {
+                                            "id": "tsrngn",
+                                            "text": "QWERTY MODE"
+                                        }
+                                    }
+                                ],
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_notification_message": {
+                                                "id": "tsrngn",
+                                                "text": ""
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_notification_message": {
+                                                "id": "tsrngn",
+                                                "text": ""
+                                            }
+                                        }
+                                    ]
+                                },
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    },
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "page_down"
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 2000
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "tsrngn",
+                                            "value": 1
+                                        }
+                                    },
+                                    {
+                                        "set_notification_message": {
+                                            "id": "tsrngn",
+                                            "text": "TSRNGN MODE"
+                                        }
+                                    }
+                                ],
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_notification_message": {
+                                                "id": "tsrngn",
+                                                "text": ""
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_notification_message": {
+                                                "id": "tsrngn",
+                                                "text": ""
+                                            }
+                                        }
+                                    ]
+                                },
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "layer",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    },
+                                    {
+                                        "name": "tsrngn",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "page_down"
+                                },
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 2000
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "tsrngn",
+                                            "value": 2
+                                        }
+                                    },
+                                    {
+                                        "set_notification_message": {
+                                            "id": "tsrngn",
+                                            "text": "FULL TSRNGN MODE"
+                                        }
+                                    }
+                                ],
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_notification_message": {
+                                                "id": "tsrngn",
+                                                "text": ""
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_notification_message": {
+                                                "id": "tsrngn",
+                                                "text": ""
+                                            }
+                                        }
+                                    ]
+                                },
                                 "type": "basic"
                             }
                         ]
@@ -506,16 +3822,6 @@
                         },
                         {
                             "from": {
-                                "key_code": "right_command"
-                            },
-                            "to": [
-                                {
-                                    "key_code": "japanese_eisuu"
-                                }
-                            ]
-                        },
-                        {
-                            "from": {
                                 "key_code": "right_option"
                             },
                             "to": [
@@ -524,41 +3830,8 @@
                                 }
                             ]
                         }
-                    ]
-                },
-                {
-                    "disable_built_in_keyboard_if_exists": false,
-                    "fn_function_keys": [],
-                    "identifiers": {
-                        "is_keyboard": true,
-                        "is_pointing_device": false,
-                        "product_id": 4438,
-                        "vendor_id": 51984
-                    },
-                    "ignore": false,
-                    "manipulate_caps_lock_led": false,
-                    "simple_modifications": [
-                        {
-                            "from": {
-                                "key_code": "left_command"
-                            },
-                            "to": [
-                                {
-                                    "key_code": "left_control"
-                                }
-                            ]
-                        },
-                        {
-                            "from": {
-                                "key_code": "left_control"
-                            },
-                            "to": [
-                                {
-                                    "key_code": "left_command"
-                                }
-                            ]
-                        }
-                    ]
+                    ],
+                    "treat_as_built_in_keyboard": false
                 },
                 {
                     "disable_built_in_keyboard_if_exists": false,
@@ -570,15 +3843,15 @@
                         "vendor_id": 11240
                     },
                     "ignore": false,
-                    "manipulate_caps_lock_led": false,
+                    "manipulate_caps_lock_led": true,
                     "simple_modifications": [
                         {
                             "from": {
-                                "key_code": "left_control"
+                                "key_code": "escape"
                             },
                             "to": [
                                 {
-                                    "key_code": "left_command"
+                                    "key_code": "grave_accent_and_tilde"
                                 }
                             ]
                         },
@@ -594,11 +3867,11 @@
                         },
                         {
                             "from": {
-                                "key_code": "right_option"
+                                "key_code": "left_control"
                             },
                             "to": [
                                 {
-                                    "key_code": "escape"
+                                    "key_code": "left_command"
                                 }
                             ]
                         },
@@ -612,7 +3885,153 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "treat_as_built_in_keyboard": false
+                },
+                {
+                    "disable_built_in_keyboard_if_exists": false,
+                    "fn_function_keys": [],
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": false,
+                        "product_id": 328,
+                        "vendor_id": 2131
+                    },
+                    "ignore": false,
+                    "manipulate_caps_lock_led": true,
+                    "simple_modifications": [
+                        {
+                            "from": {
+                                "key_code": "keypad_num_lock"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "vk_none"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "left_command"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "left_control"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "left_control"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "right_command"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "right_control"
+                                }
+                            ]
+                        }
+                    ],
+                    "treat_as_built_in_keyboard": false
+                },
+                {
+                    "disable_built_in_keyboard_if_exists": false,
+                    "fn_function_keys": [],
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": false,
+                        "product_id": 0,
+                        "vendor_id": 65261
+                    },
+                    "ignore": false,
+                    "manipulate_caps_lock_led": true,
+                    "simple_modifications": [
+                        {
+                            "from": {
+                                "key_code": "left_command"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "left_control"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "left_control"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
+                        }
+                    ],
+                    "treat_as_built_in_keyboard": false
+                },
+                {
+                    "disable_built_in_keyboard_if_exists": false,
+                    "fn_function_keys": [],
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": false,
+                        "product_id": 591,
+                        "vendor_id": 1452
+                    },
+                    "ignore": false,
+                    "manipulate_caps_lock_led": true,
+                    "simple_modifications": [
+                        {
+                            "from": {
+                                "key_code": "escape"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "grave_accent_and_tilde"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "left_command"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "left_control"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "left_control"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "right_option"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "right_command"
+                                }
+                            ]
+                        }
+                    ],
+                    "treat_as_built_in_keyboard": false
                 }
             ],
             "fn_function_keys": [
@@ -733,16 +4152,6 @@
                     "to": [
                         {
                             "consumer_key_code": "volume_increment"
-                        }
-                    ]
-                },
-                {
-                    "from": {
-                        "key_code": "japanese_eisuu"
-                    },
-                    "to": [
-                        {
-                            "key_code": "japanese_kana"
                         }
                     ]
                 }
